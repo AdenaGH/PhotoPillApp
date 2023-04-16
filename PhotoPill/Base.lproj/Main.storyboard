@@ -535,7 +535,7 @@
         <segue reference="fA0-JH-xvy"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="chevron.backward" catalog="system" width="32" height="32"/>
+        <image name="chevron.backward" catalog="system" width="97" height="128"/>
         <image name="pill1" width="225" height="225"/>
         <image name="pills.circle" catalog="system" width="128" height="123"/>
         <systemColor name="labelColor">
