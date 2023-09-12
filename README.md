@@ -6,7 +6,8 @@ PhotoPill is an app that will allow users to enter basic information about a pil
 
 ### Version 0.1.0:
 #### New Features
-* Added blank app home screen
+* Added demo home screen with interactive button.
+* Added compatability for both Android and iOS.
 
 #### Bug Fixes
 N/A
