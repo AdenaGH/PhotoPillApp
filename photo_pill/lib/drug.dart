@@ -1,12 +1,16 @@
 class Drug implements Comparable<Drug>{
+    //attributes are set to "DEFAULT" by default
     String name = "DEFAULT";
     String color = "DEFAULT";
     String shape = "DEFAULT";
     String size = "DEFAULT";
     int priority = 0;
 
+    //  constructor
+    //  make sure to pass in "DEFAULT" if user input is empty
     Drug(this.name, this.color, this.shape, this.size);
 
+    //  display current info
     void displayInfo() {
         print('Drug Name: $name');
         print('Color: $color');
@@ -14,6 +18,9 @@ class Drug implements Comparable<Drug>{
         print('Size: $size');
     }
   
+    //  compare drug with target drug, set priority accordingly
+    //  @otherDrug      the target drug from user input
+    //  @return         the priority of current drug
     int compare(Drug otherDrug) {
         int temp = 0;
         if (name == otherDrug.name) {
@@ -32,6 +39,9 @@ class Drug implements Comparable<Drug>{
         return temp;
     }
     
+    //  compare 2 drugs based on their similarity to target drug (i.e., priority)
+    //  @otherDrug      another Drug on the cross-referencing list
+    //  @return         if this drug has more priority
     @override
     int compareTo(Drug otherDrug) {
         if (priority > otherDrug.priority) {
