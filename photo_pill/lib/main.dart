@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_pill/inputPatientMed.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,19 +56,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -112,10 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 75,
               child: ElevatedButton(
                   onPressed: () {
-                    print('input patient data button pressed');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return InputPatientMed();
+                      }),
+                    );
                   },
                   child: const Text(
-                    'Input Patient Data',
+                    'Input Patient Medications',
                     style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   )),
@@ -143,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     print('Clear button pressed');
                   },
                   child: const Text(
-                    'Clear',
+                    'Clear Data',
                     style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   )),
