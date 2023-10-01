@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_pill/inputPatientMed.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'PhotoPill',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -28,10 +29,10 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'PhotoPill'),
     );
   }
 }
@@ -55,19 +56,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -82,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        //backgroundColor: Colors.amber,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
@@ -103,22 +92,57 @@ class _MyHomePageState extends State<MyHomePage> {
           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
+          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            SizedBox(
+              width: 200,
+              height: 75,
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return InputPatientMed();
+                      }),
+                    );
+                  },
+                  child: const Text(
+                    'Input Patient Medications',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  )),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            const SizedBox(height: 50),
+            SizedBox(
+              width: 200,
+              height: 75,
+              child: ElevatedButton(
+                  onPressed: () {
+                    print('input patient description button pressed');
+                  },
+                  child: const Text(
+                    'Input Patient Description',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  )),
+            ),
+            const SizedBox(height: 50),
+            SizedBox(
+              width: 200,
+              height: 75,
+              child: ElevatedButton(
+                  onPressed: () {
+                    print('Clear button pressed');
+                  },
+                  child: const Text(
+                    'Clear Data',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center,
+                  )),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
