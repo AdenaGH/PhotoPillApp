@@ -13,3 +13,11 @@ PhotoPill is an app that will allow users to enter basic information about a pil
 N/A
 
 ---
+### Version 0.2.0:
+#### New Features
+* Added ability to manually enter medications by name
+* Manually entered medications are stored locally.
+* Manually entered medications will be displayed in a list on the screen.
+
+#### Bug Fixes
+N/A
