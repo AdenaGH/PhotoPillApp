@@ -21,3 +21,6 @@ N/A
 
 #### Bug Fixes
 N/A
+
+#### Known Errors
+* List of medications will disappear once user switches screens
