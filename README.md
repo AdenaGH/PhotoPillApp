@@ -24,3 +24,4 @@ N/A
 
 #### Known Errors
 * List of medications will disappear once user switches screens
+* Empty text is allowed as valid input and will appear in lists
