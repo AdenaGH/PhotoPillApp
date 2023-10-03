@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_pill/inputDrugDescription.dart';
 import 'package:photo_pill/inputPatientMed.dart';
 
 void main() {
@@ -119,10 +120,15 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 75,
               child: ElevatedButton(
                   onPressed: () {
-                    print('input patient description button pressed');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return InputDrugDescription();
+                      }),
+                    );
                   },
                   child: const Text(
-                    'Input Patient Description',
+                    'Input Drug Description',
                     style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center,
                   )),

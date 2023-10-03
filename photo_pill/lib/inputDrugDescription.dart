@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class InputPatientMed extends StatefulWidget {
-  const InputPatientMed({Key? key}) : super(key: key);
+class InputDrugDescription extends StatefulWidget {
+  const InputDrugDescription({Key? key}) : super(key: key);
 
   @override
-  _InputPatientMedState createState() => _InputPatientMedState();
+  _InputDrugDescriptionState createState() => _InputDrugDescriptionState();
 }
 
-class _InputPatientMedState extends State<InputPatientMed> {
+class _InputDrugDescriptionState extends State<InputDrugDescription> {
   bool isVisible = true;
-  List<String> drugNames = []; // List to store drug names
+  List<String> drugDescriptions = []; // List to store drug names
 
   void toggle() {
     setState(() {
@@ -19,7 +19,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
 
   void addDrugName(String name) {
     setState(() {
-      drugNames.add(name);
+      drugDescriptions.add(name);
     });
   }
 
@@ -28,7 +28,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
-        title: const Text('Patient Medications'),
+        title: const Text('Drug Description'),
       ),
       body: Center(
         child: Column(
@@ -36,7 +36,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
           children: <Widget>[
             Visibility(
               child: Text(
-                'Click the button to start adding patient medication!',
+                'Click the button to start adding drug descriptions!',
                 style: TextStyle(fontSize: 20),
                 textAlign: TextAlign.center,
               ),
@@ -46,10 +46,10 @@ class _InputPatientMedState extends State<InputPatientMed> {
             // Display the list of drug names
             ListView.builder(
               shrinkWrap: true,
-              itemCount: drugNames.length,
+              itemCount: drugDescriptions.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(drugNames[index]),
+                  title: Text(drugDescriptions[index]),
                 );
               },
             ),
@@ -66,7 +66,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
             builder: (BuildContext context) {
               String newDrugName = '';
               return AlertDialog(
-                title: Text('Add Drug Name'),
+                title: Text('Add Drug Description'),
                 content: TextField(
                   onChanged: (value) {
                     newDrugName = value;
@@ -75,7 +75,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                      // remove initial text on screen
+                      // remove on screen prompt text
                       toggle();
                       // Add the drug name to the list
                       if (newDrugName.isNotEmpty) {
