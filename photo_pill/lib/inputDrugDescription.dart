@@ -11,18 +11,6 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
   bool isVisible = true;
   List<String> drugDescriptions = []; // List to store drug names
 
-  void toggle() {
-    setState(() {
-      isVisible = false;
-    });
-  }
-
-  void addDrugName(String name) {
-    setState(() {
-      drugDescriptions.add(name);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,68 +18,50 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
         backgroundColor: Colors.lightBlue,
         title: const Text('Drug Description'),
       ),
-      body: Center(
+      body: Container(
+        height: MediaQuery.of(context).size.height *
+            0.95, // Set height to 75% of the screen width
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Visibility(
-              child: Text(
-                'Click the button to start adding drug descriptions!',
-                style: TextStyle(fontSize: 20),
-                textAlign: TextAlign.center,
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Name",
+                hintText: "Enter drug name or initial characters",
               ),
-              visible: isVisible,
             ),
-            SizedBox(height: 20),
-            // Display the list of drug names
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: drugDescriptions.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(drugDescriptions[index]),
-                );
-              },
+            // want to add checkbox here for mg or ml
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Dosage",
+                hintText: "Enter dosage amount",
+              ),
             ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Dosage Form",
+                hintText: "Ex: Tablet, Capsule, Powder, Oral, Injection, etc",
+              ),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Color",
+              ),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Purpose",
+              ),
+            ),
+            ElevatedButton(
+                onPressed: () {},
+                child: const Text(
+                  'Search',
+                  style: TextStyle(fontSize: 20),
+                  textAlign: TextAlign.center,
+                )),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.lightBlue,
-        splashColor: Colors.lightBlueAccent,
-        onPressed: () {
-          // Show a dialog to input drug name
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              String newDrugName = '';
-              return AlertDialog(
-                title: Text('Add Drug Description'),
-                content: TextField(
-                  onChanged: (value) {
-                    newDrugName = value;
-                  },
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      // remove on screen prompt text
-                      toggle();
-                      // Add the drug name to the list
-                      if (newDrugName.isNotEmpty) {
-                        addDrugName(newDrugName);
-                        Navigator.of(context).pop(); // Close the dialog
-                      }
-                    },
-                    child: Text('Add'),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        tooltip: 'Add Items',
-        child: const Icon(Icons.add),
       ),
     );
   }
