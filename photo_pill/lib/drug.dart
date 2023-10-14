@@ -4,7 +4,7 @@ class Drug implements Comparable<Drug>{
     String color = "DEFAULT";
     String shape = "DEFAULT";
     String size = "DEFAULT";
-    int priority = 0;
+    int priority = -1;
 
     //  constructor
     //  make sure to pass in "DEFAULT" if user input is empty
