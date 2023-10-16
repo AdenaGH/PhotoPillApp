@@ -46,16 +46,56 @@ class _InputPatientMedState extends State<InputPatientMed> {
         shrinkWrap: true,
         itemCount: drugNames.length,
         itemBuilder: (context, index) {
+          String editedName = drugNames[index];
           return Center(
             child: Container(
-              padding: EdgeInsets.all(7.0), // Adjust padding as needed
-              margin: EdgeInsets.symmetric(vertical: 4.0), // Add vertical margin between items
-              color: Colors.green, // Set the background color to green
-              child: ListTile(
-                title: Text(
-                  drugNames[index],
-                  style: TextStyle(fontSize: 18, color: Colors.white), // Style the text as needed
-                ),
+              padding: EdgeInsets.all(7.0),
+              margin: EdgeInsets.symmetric(vertical: 4.0),
+              color: Colors.green,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      title: Text(
+                        editedName,
+                        style: TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.edit, color: Colors.white),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          String editedDrugName = editedName;
+                          return AlertDialog(
+                            title: Text('Edit Drug Name'),
+                            content: TextField(
+                              controller: TextEditingController(text: editedDrugName),
+                              onChanged: (value) {
+                                editedDrugName = value;
+                              },
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  if (editedDrugName.trim().isNotEmpty) {
+                                    setState(() {
+                                      drugNames[index] = editedDrugName;
+                                    });
+                                    Navigator.of(context).pop(); // Close the dialog
+                                  }
+                                },
+                                child: Text('Save'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           );
@@ -80,39 +120,55 @@ class _InputPatientMedState extends State<InputPatientMed> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.lightBlue,
-        splashColor: Colors.lightBlueAccent,
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              String newDrugName = '';
-              return AlertDialog(
-                title: Text('Add Drug Name'),
-                content: TextField(
-                  onChanged: (value) {
-                    newDrugName = value;
-                  },
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      if (newDrugName.trim().isNotEmpty) {
-                        toggle();
-                        addDrugName(newDrugName);
-                        Navigator.of(context).pop(); // Close the dialog
-                      }
-                    },
-                    child: Text('Add'),
-                  ),
-                ],
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            backgroundColor: Colors.lightBlue,
+            splashColor: Colors.lightBlueAccent,
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  String newDrugName = '';
+                  return AlertDialog(
+                    title: Text('Add Drug Name'),
+                    content: TextField(
+                      onChanged: (value) {
+                        newDrugName = value;
+                      },
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          if (newDrugName.trim().isNotEmpty) {
+                            toggle();
+                            addDrugName(newDrugName);
+                            Navigator.of(context).pop(); // Close the dialog
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('$newDrugName added'),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text('Add'),
+                      ),
+                    ],
+                  );
+                },
               );
             },
-          );
-        },
-        tooltip: 'Add Items',
-        child: const Icon(Icons.add),
+            tooltip: 'Add Items',
+            child: const Icon(Icons.add),
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: clearMedicines,
+            child: Text('Clear Medicines'),
+          ),
+        ],
       ),
     );
   }
