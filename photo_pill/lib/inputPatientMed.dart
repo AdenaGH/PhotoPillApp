@@ -48,7 +48,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
         itemBuilder: (context, index) {
           return Center(
             child: Container(
-              padding: EdgeInsets.all(8.0), // Adjust padding as needed
+              padding: EdgeInsets.all(7.0), // Adjust padding as needed
               margin: EdgeInsets.symmetric(vertical: 4.0), // Add vertical margin between items
               color: Colors.green, // Set the background color to green
               child: ListTile(
