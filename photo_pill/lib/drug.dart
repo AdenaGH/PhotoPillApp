@@ -5,12 +5,15 @@ class Drug implements Comparable<Drug>{
     String shape = "DEFAULT";
     //size is removed from identification process, only used for export order
     //size in mm
+    // dosage is in mg/mL
     int size = 0;
+    int dosage = 0;
     int priority = -1;
 
     //  constructor
     //  make sure to pass in "DEFAULT" if user input is empty
-    Drug(this.name, this.color, this.shape, this.size);
+    // may need to incoroprate Dosage into drug class for clarity 
+    Drug(this.name, this.color, this.shape, this.size, this.dosage);
 
     //  display current info
     void displayInfo() {
@@ -18,6 +21,7 @@ class Drug implements Comparable<Drug>{
         print('Color: $color');
         print('Shape: $shape');
         print('Size: $size');
+        print('Dosage: $dosage');
     }
   
     //  compare drug with target drug, set priority accordingly
