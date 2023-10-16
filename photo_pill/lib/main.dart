@@ -48,21 +48,21 @@ class _LandingPageState extends State<LandingPage> {
   index: _selectedIndex,
   children: _pages,
 ),
-      // bottomNavigationBar: BottomNavigationBar (
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home_outlined),
-      //       label: "Home",),
-      //       BottomNavigationBarItem(
-      //       icon: Icon(Icons.add_chart_rounded),
-      //       label: "Data",),
-      //       BottomNavigationBarItem(
-      //       icon: Icon(Icons.search),
-      //       label: "Search",),
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   onTap: _onItemTapped,
-      // ),
+      bottomNavigationBar: BottomNavigationBar (
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: "Home",),
+            BottomNavigationBarItem(
+            icon: Icon(Icons.add_chart_rounded),
+            label: "Data",),
+            BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: "Search",),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
        // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
