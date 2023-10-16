@@ -31,6 +31,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
               ),
             ),
             // want to add checkbox here for mg or ml
+            // need to find a way to concorprate dosage into Drug field
             TextField(
               decoration: InputDecoration(
                 labelText: "Dosage",
