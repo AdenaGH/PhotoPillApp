@@ -10,6 +10,7 @@ class Drug implements Comparable<Drug>{
 
     //  constructor
     //  make sure to pass in "DEFAULT" if user input is empty
+    // may need to incoroprate Dosage into drug class for clarity 
     Drug(this.name, this.color, this.shape, this.size);
 
     //  display current info
