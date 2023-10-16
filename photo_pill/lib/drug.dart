@@ -3,6 +3,7 @@ class Drug implements Comparable<Drug>{
     String name = "DEFAULT";
     String color = "DEFAULT";
     String shape = "DEFAULT";
+    //size is removed from identification process, only used for export order
     String size = "DEFAULT";
     int priority = -1;
 
@@ -30,9 +31,6 @@ class Drug implements Comparable<Drug>{
         temp++;
         }
         if (shape == otherDrug.shape) {
-        temp++;
-        }
-        if (size == otherDrug.size) {
         temp++;
         }
         priority = temp;

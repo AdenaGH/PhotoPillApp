@@ -5,8 +5,7 @@ class PriorityMap {
         "noMatch" : List<Drug>.empty(),
         "priority1" : List<Drug>.empty(),
         "priority2" : List<Drug>.empty(),
-        "priority3" : List<Drug>.empty(),
-        "priority4" : List<Drug>.empty()
+        "priority3" : List<Drug>.empty()
     };
     bool isEmpty = true;
 
@@ -47,16 +46,13 @@ class PriorityMap {
                 case 3:
                     list = map["priority3"];
                     break;
-                case 4:
-                    list = map["priority4"];
-                    break;
                 default:
                     list = map["noMatch"];
                     break;
             }
             bool flag = true;
             for (Drug existed in list) {
-                if (existed.compare(drug) == 4) {
+                if (existed.compare(drug) == 3) {
                     flag = false;
                 }
             }
@@ -73,8 +69,7 @@ class PriorityMap {
         "noMatch" : List<Drug>.empty(),
         "priority1" : List<Drug>.empty(),
         "priority2" : List<Drug>.empty(),
-        "priority3" : List<Drug>.empty(),
-        "priority4" : List<Drug>.empty()
+        "priority3" : List<Drug>.empty()
         };
         isEmpty = true;
     }
@@ -90,13 +85,11 @@ Map<String, List<Drug>> crossReference(List<Drug> drugList, Drug target) {
         "noMatch" : List<Drug>.empty(),
         "priority1" : List<Drug>.empty(),
         "priority2" : List<Drug>.empty(),
-        "priority3" : List<Drug>.empty(),
-        "priority4" : List<Drug>.empty()
+        "priority3" : List<Drug>.empty()
     };
     List<Drug> list1 = [];
     List<Drug> list2 = [];
     List<Drug> list3 = [];
-    List<Drug> list4 = [];
     List<Drug> list0 = [];
     if (drugList.isEmpty) {
       return priorityMap;
@@ -115,9 +108,6 @@ Map<String, List<Drug>> crossReference(List<Drug> drugList, Drug target) {
             case 3:
                 list3.add(drug);
                 break;
-            case 4:
-                list4.add(drug);
-                break;
             default:
                 list0.add(drug);
                 break;
@@ -127,6 +117,5 @@ Map<String, List<Drug>> crossReference(List<Drug> drugList, Drug target) {
     priorityMap["priority1"] = list1;
     priorityMap["priority2"] = list2;
     priorityMap["priority3"] = list3;
-    priorityMap["priority4"] = list4;
     return priorityMap;
 }
