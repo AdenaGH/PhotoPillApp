@@ -20,7 +20,48 @@ class _InputPatientMedState extends State<InputPatientMed> {
   void addDrugName(String name) {
     setState(() {
       drugNames.add(name);
+      isVisible = false; // Hide the text after adding a medication
     });
+  }
+
+  void clearMedicines() {
+    setState(() {
+      drugNames.clear(); // Clear the list
+      isVisible = true; // Show the initial text
+    });
+  }
+
+  Widget buildMedicineList() {
+    if (drugNames.isEmpty) {
+      return Visibility(
+        child: Text(
+          'Click the button to start adding patient medication!',
+          style: TextStyle(fontSize: 20),
+          textAlign: TextAlign.center,
+        ),
+        visible: isVisible,
+      );
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: drugNames.length,
+        itemBuilder: (context, index) {
+          return Center(
+            child: Container(
+              padding: EdgeInsets.all(8.0), // Adjust padding as needed
+              margin: EdgeInsets.symmetric(vertical: 4.0), // Add vertical margin between items
+              color: Colors.green, // Set the background color to green
+              child: ListTile(
+                title: Text(
+                  drugNames[index],
+                  style: TextStyle(fontSize: 18, color: Colors.white), // Style the text as needed
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -34,25 +75,8 @@ class _InputPatientMedState extends State<InputPatientMed> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Visibility(
-              child: Text(
-                'Click the button to start adding patient medication!',
-                style: TextStyle(fontSize: 20),
-                textAlign: TextAlign.center,
-              ),
-              visible: isVisible,
-            ),
+            buildMedicineList(),
             SizedBox(height: 20),
-            // Display the list of drug names
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: drugNames.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(drugNames[index]),
-                );
-              },
-            ),
           ],
         ),
       ),
@@ -60,7 +84,6 @@ class _InputPatientMedState extends State<InputPatientMed> {
         backgroundColor: Colors.lightBlue,
         splashColor: Colors.lightBlueAccent,
         onPressed: () {
-          // Show a dialog to input drug name
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -75,11 +98,8 @@ class _InputPatientMedState extends State<InputPatientMed> {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                      // Add the drug name to the list
                       if (newDrugName.trim().isNotEmpty) {
-                        // remove initial text on screen
                         toggle();
-                        //actually add it to the list and on screen
                         addDrugName(newDrugName);
                         Navigator.of(context).pop(); // Close the dialog
                       }
