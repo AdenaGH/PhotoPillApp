@@ -3,8 +3,10 @@ class Drug implements Comparable<Drug>{
     String name = "DEFAULT";
     String color = "DEFAULT";
     String shape = "DEFAULT";
-    String size = "DEFAULT";
-    int priority = 0;
+    //size is removed from identification process, only used for export order
+    //size in mm
+    int size = 0;
+    int priority = -1;
 
     //  constructor
     //  make sure to pass in "DEFAULT" if user input is empty
@@ -32,9 +34,6 @@ class Drug implements Comparable<Drug>{
         if (shape == otherDrug.shape) {
         temp++;
         }
-        if (size == otherDrug.size) {
-        temp++;
-        }
         priority = temp;
         return temp;
     }
@@ -44,9 +43,9 @@ class Drug implements Comparable<Drug>{
     //  @return         if this drug has more priority
     @override
     int compareTo(Drug otherDrug) {
-        if (priority > otherDrug.priority) {
+        if (size > otherDrug.size) {
           return 1;
-        } else if (priority < otherDrug.priority) {
+        } else if (size < otherDrug.size) {
           return -1;
         } else {
           return 0;

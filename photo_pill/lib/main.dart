@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:photo_pill/inputDrugDescription.dart';
 import 'package:photo_pill/inputPatientMed.dart';
+import 'package:photo_pill/myHomePage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,13 +34,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'PhotoPill'),
+      home: const LandingPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class LandingPage extends StatefulWidget {
+  const LandingPage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -49,13 +51,18 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
-
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<LandingPage> createState() => _LandingPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _LandingPageState extends State<LandingPage> {
+  late int _selectedIndex = 0;
+  static const _pages = [
+   MyHomePage(title: "PhotoPill"),
+   InputPatientMed(),
+   InputDrugDescription(),
+
+];
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -65,85 +72,33 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        //backgroundColor: Colors.amber,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      body: IndexedStack(
+  index: _selectedIndex,
+  children: _pages,
+),
+      bottomNavigationBar: BottomNavigationBar (
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: "Home",),
+            BottomNavigationBarItem(
+            icon: Icon(Icons.add_chart_rounded),
+            label: "Data",),
+            BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: "Search",),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width: 200,
-              height: 75,
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return InputPatientMed();
-                      }),
-                    );
-                  },
-                  child: const Text(
-                    'Input Patient Medications',
-                    style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  )),
-            ),
-            const SizedBox(height: 50),
-            SizedBox(
-              width: 200,
-              height: 75,
-              child: ElevatedButton(
-                  onPressed: () {
-                    print('input patient description button pressed');
-                  },
-                  child: const Text(
-                    'Input Patient Description',
-                    style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  )),
-            ),
-            const SizedBox(height: 50),
-            SizedBox(
-              width: 200,
-              height: 75,
-              child: ElevatedButton(
-                  onPressed: () {
-                    print('Clear button pressed');
-                  },
-                  child: const Text(
-                    'Clear Data',
-                    style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.center,
-                  )),
-            ),
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  void _onItemTapped(int index) {
+  setState(() {
+    _selectedIndex = index;
+  });
+}
+  
 }
