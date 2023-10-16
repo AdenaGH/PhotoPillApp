@@ -20,6 +20,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
   void addDrugName(String name) {
     setState(() {
       drugNames.add(name);
+      isVisible = false;
     });
   }
 
@@ -76,7 +77,10 @@ class _InputPatientMedState extends State<InputPatientMed> {
                   TextButton(
                     onPressed: () {
                       // Add the drug name to the list
-                      if (newDrugName.isNotEmpty) {
+                      if (newDrugName.trim().isNotEmpty) {
+                        // remove initial text on screen
+                        toggle();
+                        //actually add it to the list and on screen
                         addDrugName(newDrugName);
                         Navigator.of(context).pop(); // Close the dialog
                       }
