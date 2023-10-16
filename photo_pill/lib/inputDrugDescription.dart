@@ -38,6 +38,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
               ),
             ),
             TextField(
+              // currently open ended, could make this drop down in the future
               decoration: InputDecoration(
                 labelText: "Dosage Form",
                 hintText: "Ex: Tablet, Capsule, Powder, Oral, Injection, etc",

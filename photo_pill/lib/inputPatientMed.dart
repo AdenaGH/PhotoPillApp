@@ -36,7 +36,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
       return Visibility(
         child: Text(
           'Click the button to start adding patient medication!',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 18),
           textAlign: TextAlign.center,
         ),
         visible: isVisible,
