@@ -27,7 +27,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
   void clearMedicines() {
     setState(() {
       drugNames.clear(); // Clear the list
-      isVisible = true; // Show the initial text
+      isVisible = true; // Show the initial  text
     });
   }
 
