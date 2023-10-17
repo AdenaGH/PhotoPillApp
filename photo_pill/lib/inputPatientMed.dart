@@ -108,10 +108,24 @@ class _InputPatientMedState extends State<InputPatientMed> {
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
+                                  setState(() {
+                                    drugNames.removeAt(index);
+                                  });
                                   Navigator.of(context)
                                       .pop(); // Close the dialog
                                 },
-                                child: Text('No'),
+                                child: Text(
+                                  'Yes, I am sure',
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                },
+                                child:
+                                    Text('No', style: TextStyle(fontSize: 20)),
                               ),
                             ],
                           );
