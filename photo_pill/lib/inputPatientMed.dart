@@ -72,7 +72,8 @@ class _InputPatientMedState extends State<InputPatientMed> {
                           return AlertDialog(
                             title: Text('Edit Drug Name'),
                             content: TextField(
-                              controller: TextEditingController(text: editedDrugName),
+                              controller:
+                                  TextEditingController(text: editedDrugName),
                               onChanged: (value) {
                                 editedDrugName = value;
                               },
@@ -84,10 +85,33 @@ class _InputPatientMedState extends State<InputPatientMed> {
                                     setState(() {
                                       drugNames[index] = editedDrugName;
                                     });
-                                    Navigator.of(context).pop(); // Close the dialog
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
                                   }
                                 },
                                 child: Text('Save'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Are you sure you want to delete?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                },
+                                child: Text('No'),
                               ),
                             ],
                           );
