@@ -8,7 +8,8 @@ class InputDrugDescription extends StatefulWidget {
 }
 
 class _InputDrugDescriptionState extends State<InputDrugDescription> {
-  bool isChecked = false;
+  bool isCheckedMg = false;
+  bool isCheckedMl = false;
   bool isVisible = true;
   List<String> drugDescriptions = []; // List to store drug names
 
@@ -44,10 +45,10 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                 Expanded(
                   child: CheckboxListTile(
                     title: Text("mg"),
-                    value: isChecked,
+                    value: isCheckedMg,
                     onChanged: (bool? value) {
                       setState(() {
-                        isChecked = value!;
+                        isCheckedMg = value!;
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
@@ -56,10 +57,10 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                 Expanded(
                   child: CheckboxListTile(
                     title: Text("ml"),
-                    value: isChecked,
+                    value: isCheckedMl,
                     onChanged: (bool? value) {
                       setState(() {
-                        isChecked = value!;
+                        isCheckedMl = value!;
                       });
                     },
                     controlAffinity: ListTileControlAffinity.leading,
