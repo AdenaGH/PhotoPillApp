@@ -8,6 +8,7 @@ class InputDrugDescription extends StatefulWidget {
 }
 
 class _InputDrugDescriptionState extends State<InputDrugDescription> {
+  bool isChecked = false;
   bool isVisible = true;
   List<String> drugDescriptions = []; // List to store drug names
 
@@ -37,6 +38,34 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                 labelText: "Dosage",
                 hintText: "Enter dosage amount",
               ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: CheckboxListTile(
+                    title: Text("mg"),
+                    value: isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                ),
+                Expanded(
+                  child: CheckboxListTile(
+                    title: Text("ml"),
+                    value: isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value!;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                )
+              ],
             ),
             TextField(
               // currently open ended, could make this drop down in the future
