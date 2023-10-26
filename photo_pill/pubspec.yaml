@@ -28,8 +28,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  camera: ^0.10.5+5
   flutter:
     sdk: flutter
+  google_mlkit_text_recognition: ^0.10.0
+  permission_handler: ^11.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
