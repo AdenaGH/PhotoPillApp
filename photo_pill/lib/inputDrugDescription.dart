@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_pill/searchResults.dart';
 
 class InputDrugDescription extends StatefulWidget {
   const InputDrugDescription({Key? key}) : super(key: key);
@@ -86,7 +87,15 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  //need to add checks for if druglist is empty
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return SearchResults();
+                    }),
+                  );
+                },
                 child: const Text(
                   'Search',
                   style: TextStyle(fontSize: 20),
