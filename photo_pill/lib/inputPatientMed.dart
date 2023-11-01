@@ -167,11 +167,15 @@ class _InputPatientMedState extends State<InputPatientMed> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {
+            onPressed: () async {
+              final cameras = await availableCameras();
+
+              // Get a specific camera from the list of available cameras.
+              final firstCamera = cameras.first;
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) {
-                  return TakePictureScreen();
+                  return TakePictureScreen(camera: firstCamera);
                 }),
               );
             },

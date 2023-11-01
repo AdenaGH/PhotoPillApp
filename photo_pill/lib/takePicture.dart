@@ -29,12 +29,10 @@ Future<void> takePicture() async {
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({
-    super.key,
+    Key? key,
     required this.camera,
   });
-
   final CameraDescription camera;
-
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
 }
