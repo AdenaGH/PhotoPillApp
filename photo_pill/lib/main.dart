@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:photo_pill/inputDrugDescription.dart';
 import 'package:photo_pill/inputPatientMed.dart';
 import 'package:photo_pill/myHomePage.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,22 +32,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  bool _isPermissionGranted = false;
-
-  late final Future<void> _future;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _future = _requestCameraPermission();
-  }
-
-  Future<void> _requestCameraPermission() async {
-    final status = await Permission.camera.request();
-    _isPermissionGranted = status == PermissionStatus.granted;
-  }
-
   late int _selectedIndex = 0;
   static const _pages = [
     MyHomePage(title: "PhotoPill"),

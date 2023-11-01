@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:photo_pill/takePicture.dart';
+import 'package:camera/camera.dart';
+import 'dart:async';
+import 'dart:io';
 
 class InputPatientMed extends StatefulWidget {
   const InputPatientMed({Key? key}) : super(key: key);
@@ -163,6 +167,19 @@ class _InputPatientMedState extends State<InputPatientMed> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return TakePictureScreen();
+                }),
+              );
+            },
+            tooltip: 'Add Items',
+            child: const Icon(Icons.camera),
+          ),
+          SizedBox(height: 10),
+          FloatingActionButton(
             backgroundColor: Colors.lightBlue,
             splashColor: Colors.lightBlueAccent,
             onPressed: () {
@@ -201,7 +218,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
             tooltip: 'Add Items',
             child: const Icon(Icons.add),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 15),
           ElevatedButton(
             onPressed: clearMedicines,
             child: Text('Clear Medicines'),
