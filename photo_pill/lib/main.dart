@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:photo_pill/inputDrugDescription.dart';
 import 'package:photo_pill/inputPatientMed.dart';
-import 'package:photo_pill/myHomePage.dart';
+import 'package:provider/provider.dart';
+import 'MedicationProvider.dart';
+import 'myHomePage.dart'; // Assuming this is your home page
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => MedicationProvider([]),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,8 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({super.key});
-
+  const LandingPage({Key? key}) : super(key: key);
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -35,42 +40,42 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   late int _selectedIndex = 0;
   static const _pages = [
-   MyHomePage(title: "PhotoPill"),
-   InputPatientMed(),
-   InputDrugDescription(),
+    MyHomePage(title: "PhotoPill"),
+    InputPatientMed(),
+    InputDrugDescription(),
+  ];
 
-];
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       body: IndexedStack(
-  index: _selectedIndex,
-  children: _pages,
-),
-      bottomNavigationBar: BottomNavigationBar (
+        index: _selectedIndex,
+        children: _pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
-            label: "Home",),
-            BottomNavigationBarItem(
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.add_chart_rounded),
-            label: "Data",),
-            BottomNavigationBarItem(
+            label: "Data",
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: "Search",),
+            label: "Search",
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
-       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
   void _onItemTapped(int index) {
-  setState(() {
-    _selectedIndex = index;
-  });
-}
-  
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 }
