@@ -1,3 +1,4 @@
+
 class Drug implements Comparable<Drug> {
   //  attributes are set to "DEFAULT" by default
   String name = "DEFAULT";
@@ -60,3 +61,4 @@ class Drug implements Comparable<Drug> {
     }
   }
 }
+
