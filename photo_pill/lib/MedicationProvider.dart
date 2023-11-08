@@ -28,4 +28,9 @@ class MedicationProvider with ChangeNotifier {
     _drugList = newDrugList;
     notifyListeners();
   }
+  
+  void removeDrugName(String drugName) {
+    _drugList.remove(drugName);
+    notifyListeners();
+  }
 }

@@ -1,3 +1,4 @@
+// inputPatientMed.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
@@ -46,16 +47,21 @@ class _InputPatientMedState extends State<InputPatientMed> {
         ? Text('No medications added.')
         : Column(
             children: drugList.map((drugName) {
-              return Container(
-                margin: EdgeInsets.symmetric(vertical: 8),
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
+              return ListTile(
+                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                tileColor: Colors.green,
+                title: Text(
                   drugName,
                   style: TextStyle(color: Colors.white),
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  color: Colors.white,
+                  onPressed: () {
+                    medicationProvider.removeDrugName(drugName);
+                    final updatedDrugList = [...medicationProvider.drugList];
+                    _saveDrugList(updatedDrugList);
+                  },
                 ),
               );
             }).toList(),
