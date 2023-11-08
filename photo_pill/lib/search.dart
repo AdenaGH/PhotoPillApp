@@ -1,7 +1,7 @@
 import 'drug.dart';
 //export based on size requires dependency : "collection: ^1.14.13"
 import 'package:collection/collection.dart';
-
+/*
 class PriorityMap {
     Map<String, List<Drug>> map = {
         "noMatch" : List<Drug>.empty(),
@@ -185,3 +185,4 @@ Map<String, List<Drug>> crossReference(List<Drug> drugList, Drug target) {
     priorityMap["priority3"] = list3;
     return priorityMap;
 }
+*/
