@@ -11,6 +11,7 @@ class Drug implements Comparable<Drug>{
     int priority = -1;
 
     //  constructor
+    Drug.empty();
     //  make sure to pass in "DEFAULT" if user input is empty
     // may need to incoroprate Dosage into drug class for clarity 
     Drug(this.name, this.color, this.shape, this.size, this.dosage);
