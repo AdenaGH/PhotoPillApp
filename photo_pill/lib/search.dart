@@ -1,6 +1,5 @@
 import 'drug.dart';
 //export based on size requires dependency : "collection: ^1.14.13"
-import 'package:collection/collection.dart';
 
 class ReferenceList {
   //  static rank map
