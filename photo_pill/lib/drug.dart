@@ -1,55 +1,62 @@
-class Drug implements Comparable<Drug>{
-    //attributes are set to "DEFAULT" by default
-    String name = "DEFAULT";
-    String color = "DEFAULT";
-    String shape = "DEFAULT";
-    //size is removed from identification process, only used for export order
-    //size in mm
-    int size = 0;
-    int priority = -1;
+class Drug implements Comparable<Drug> {
+  //  attributes are set to "DEFAULT" by default
+  String name = "DEFAULT";
+  String color = "DEFAULT";   //{"propName":"COLORTEXT","propValue":"BLUE"}
+  String shape = "DEFAULT";   //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
+  String size = "DEFAULT";    //{"propName":"SIZE","propValue":"11 mm"}
+  int rank = -1;
 
-    //  constructor
-    Drug.empty();
-    //  make sure to pass in "DEFAULT" if user input is empty
-    Drug(this.name, this.color, this.shape, this.size);
+  //  constructor
+  Drug.empty();
+  //  pass in "" if empty input
+  Drug(String name, String color, String shape, String size) {
+    if (name.isNotEmpty) {
+      this.name = name;
+    }
+    if (color.isNotEmpty) {
+      this.color = color;
+    }
+    if (shape.isNotEmpty) {
+      this.shape = shape;
+    }
+    if (size.isNotEmpty) {
+      this.size = size;
+    }
+  }
 
-    //  display current info
-    void displayInfo() {
-        print('Drug Name: $name');
-        print('Color: $color');
-        print('Shape: $shape');
-        print('Size: $size');
+  //  get & set rank
+  //  @target       target drug
+  int getRank(Drug target) {
+    int temp = 0;
+    if (target.name != "DEFAULT" && target.name == name) {
+      temp++;
     }
-  
-    //  compare drug with target drug, set priority accordingly
-    //  @otherDrug      the target drug from user input
-    //  @return         the priority of current drug
-    int compare(Drug otherDrug) {
-        int temp = 0;
-        if (name == otherDrug.name) {
-        temp++;
-        }
-        if (color == otherDrug.color) {
-        temp++;
-        }
-        if (shape == otherDrug.shape) {
-        temp++;
-        }
-        priority = temp;
-        return temp;
+    if (target.color != "DEFAULT" && target.color == color) {
+      temp++;
+    }if (target.shape != "DEFAULT" && target.shape == shape) {
+      temp++;
+    }if (target.size != "DEFAULT" && target.size == size) {
+      temp++;
     }
-    
-    //  compare 2 drugs based on their similarity to target drug (i.e., priority)
-    //  @otherDrug      another Drug on the cross-referencing list
-    //  @return         if this drug has more priority
-    @override
-    int compareTo(Drug otherDrug) {
-        if (size > otherDrug.size) {
-          return 1;
-        } else if (size < otherDrug.size) {
-          return -1;
-        } else {
-          return 0;
-        }
+    rank = temp;
+    return rank;
+  }
+
+  //  compareTo based on rank
+  //  @drug         another drug in the referencing list
+  //  @return       1 with higher rank, 0 with same rank, -1 with lower rank
+  //  @exception    if any of the 2 drugs in comparison has no rank, throw exception
+  @override
+  int compareTo(Drug drug) {
+    if (rank == -1 || drug.rank == -1) {
+      throw const FormatException('rank not acquired.');
     }
+    if (rank > drug.rank) {
+      return 1;
+    } else if (rank < drug.rank) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
 }
