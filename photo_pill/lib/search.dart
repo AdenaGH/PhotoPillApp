@@ -47,4 +47,22 @@ class ReferenceList {
               "rank3" : [],
               "rank4" : []};
   }
+
+  // export result
+  static List<Drug> export() {
+    List<Drug> list = List<Drug>.empty();
+    if (rankMap["rank4"].length != 0) {
+      list.addAll(rankMap["rank4"]);
+    }
+    if (rankMap["rank3"].length != 0) {
+      list.addAll(rankMap["rank3"]);
+    }
+    if (rankMap["rank2"].length != 0) {
+      list.addAll(rankMap["rank2"]);
+    }
+    if (rankMap["rank1"].length != 0) {
+      list.addAll(rankMap["rank1"]);
+    }
+    return list;
+  }
 }
