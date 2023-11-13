@@ -15,7 +15,10 @@ dependencies:
   collection: ^1.14.13
   shared_preferences: ^2.0.10
   http: ^1.1.0
+<<<<<<< HEAD
   xml: ^6.3.0
+=======
+>>>>>>> d6fcd26 (force commit to allow pull)
 
 dev_dependencies:
   flutter_test:
