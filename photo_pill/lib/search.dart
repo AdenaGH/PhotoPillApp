@@ -8,6 +8,34 @@ class ReferenceList {
                         "rank2" : [],
                         "rank3" : [],
                         "rank4" : []};
+  
+  //  fetch drug list
+  //  @aipMap Map constructed by api requests
+  //  @return a list of drug object
+  static List<Drug> fetch(Map apiMap) {
+    var drugs = apiMap["ndcPropertyList"]["ndcProperty"];
+    List<Drug> drugList = List<Drug>.empty();
+    for (var item in drugs) {
+      String id = item["rxcui"];
+      var propertyList = item["propertyConceptList"]["propertyConcept"];
+      String color = "";
+      String shape = "";
+      String size = "";
+      for (var concept in propertyList) {
+        if (concept["propName"] == "COLORTEXT") {
+          color = concept["propValue"];
+        }
+        if (concept["propName"] == "SHAPETEXT") {
+          shape = concept["propValue"];
+        }
+        if (concept["propName"] == "SIZE") {
+          size = concept["propValue"];
+        }
+      }
+      drugList.add(Drug("", id, color, shape, size));
+    }
+    return drugList;
+  }
 
   //  build rank map
   //  @drugList           the referencing list

@@ -2,6 +2,7 @@
 class Drug implements Comparable<Drug> {
   //  attributes are set to "DEFAULT" by default
   String name = "DEFAULT";
+  String id = "DEFAULT";
   String color = "DEFAULT";   //{"propName":"COLORTEXT","propValue":"BLUE"}
   String shape = "DEFAULT";   //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
   String size = "DEFAULT";    //{"propName":"SIZE","propValue":"11 mm"}
@@ -10,9 +11,12 @@ class Drug implements Comparable<Drug> {
   //  constructor
   Drug.empty();
   //  pass in "" if empty input
-  Drug(String name, String color, String shape, String size) {
+  Drug(String name, String id, String color, String shape, String size) {
     if (name.isNotEmpty) {
       this.name = name;
+    }
+    if (id.isNotEmpty) {
+      this.id = id;
     }
     if (color.isNotEmpty) {
       this.color = color;
@@ -30,6 +34,8 @@ class Drug implements Comparable<Drug> {
   int getRank(Drug target) {
     int temp = 0;
     if (target.name != "DEFAULT" && target.name == name) {
+      temp++;
+    } else if (target.id != "DEFAULT" && target.id == id) {
       temp++;
     }
     if (target.color != "DEFAULT" && target.color == color) {
