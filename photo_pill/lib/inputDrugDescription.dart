@@ -92,7 +92,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return SearchResults();
+                      return searchResults();
                     }),
                   );
                 },
