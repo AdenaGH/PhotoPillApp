@@ -41,9 +41,8 @@ Future<Map<String, dynamic>> findRxcuiByString(String drugName) async {
     if (response2.statusCode == 200) {
       try {
         // Parse the response body directly as JSON
-        print(json.decode(response2.body));
-        Map<String, dynamic> properties = json.decode(response2.body);
-        return properties;
+        Map<String, dynamic> jsonMap = json.decode(response2.body);
+        return jsonMap;
       } catch (e) {
         throw Exception('Failed to parse JSON response');
       }
