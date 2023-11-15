@@ -3,18 +3,21 @@ import 'drug.dart';
 
 class ReferenceList {
   //  static rank map
-  static Map rankMap = {"rank0" : [],
-                        "rank1" : [],
-                        "rank2" : [],
-                        "rank3" : [],
-                        "rank4" : []};
-  
+  static Map rankMap = {
+    "rank0": [],
+    "rank1": [],
+    "rank2": [],
+    "rank3": [],
+    "rank4": []
+  };
+
   //  fetch drug list
   //  @aipMap Map constructed by api requests
   //  @return a list of drug object
   static List<Drug> fetch(Map apiMap) {
     var drugs = apiMap["ndcPropertyList"]["ndcProperty"];
-    List<Drug> drugList = List<Drug>.empty();
+    print("Printed drugs: " + drugs);
+    List<Drug> drugList = List<Drug>.empty(growable: true);
     for (var item in drugs) {
       String id = item["rxcui"];
       var propertyList = item["propertyConceptList"]["propertyConcept"];
@@ -69,11 +72,7 @@ class ReferenceList {
 
   // clean rank map
   static void clean() {
-    rankMap = {"rank0" : [],
-              "rank1" : [],
-              "rank2" : [],
-              "rank3" : [],
-              "rank4" : []};
+    rankMap = {"rank0": [], "rank1": [], "rank2": [], "rank3": [], "rank4": []};
   }
 
   // export result
