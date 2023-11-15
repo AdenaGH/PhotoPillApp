@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:photo_pill/search.dart' as searchlib;
 import 'package:photo_pill/drug.dart' as druglib;
 import 'dart:developer' as developer;
+import 'dart:convert';
+import 'dart:io';
 
 void main() {
   test('empty drug object creation test', () {
@@ -24,5 +26,28 @@ void main() {
     druglib.Drug target = druglib.Drug("", "", "BLUE", "barrel shaped", "11 mm");
     drug.getRank(target);
     expect(drug.rank, 3);
+  });
+  test('fetch test', () {
+    String input = """{"ndcPropertyList":{"ndcProperty":[{   "ndcItem":"00378451793","ndc9":"0378-4517","ndc10":"0378-4517-93","rxcui":"597987","splSetIdItem":"4be76756-4114-4d50-a36c-fd410f6c773d","packagingList":{"packaging":["30 TABLET, FILM COATED in 1 BOTTLE, PLASTIC (0378-4517-93)"]},"propertyConceptList":{"propertyConcept":[{"propName":"ANDA","propValue":"ANDA200465"},{"propName":"COLORTEXT","propValue":"BLUE"},{"propName":"COLOR","propValue":"C48333"},{"propName":"DM_SPL_ID","propValue":"633412"},{"propName":"IMPRINT_CODE","propValue":"M;AA8"},{"propName":"LABELER","propValue":"Mylan Pharmaceuticals Inc."},{"propName":"LABEL_TYPE","propValue":"HUMAN PRESCRIPTION DRUG"},{"propName":"MARKETING_CATEGORY","propValue":"ANDA"},{"propName":"MARKETING_EFFECTIVE_TIME_LOW","propValue":"20141106"},{"propName":"MARKETING_STATUS","propValue":"ACTIVE"},{"propName":"SCORE","propValue":"1"},{"propName":"SHAPETEXT","propValue":"barrel shaped"},{"propName":"SHAPE","propValue":"C48345"},{"propName":"SIZE","propValue":"11 mm"}]},"source":"Hybrid"}]}}""";
+    var map = jsonDecode(input);
+    assert(map is Map);
+    List<druglib.Drug> druglist = searchlib.ReferenceList.fetch(map);
+    var drug = druglist[0];
+    expect(drug.id, "597987");
+    expect(drug.color, "BLUE");
+    expect(drug.shape, "barrel shaped");
+    expect(drug.size, "11 mm");
+  });
+  test('integration test', () {
+    String input = """{"ndcPropertyList":{"ndcProperty":[{   "ndcItem":"00378451793","ndc9":"0378-4517","ndc10":"0378-4517-93","rxcui":"597987","splSetIdItem":"4be76756-4114-4d50-a36c-fd410f6c773d","packagingList":{"packaging":["30 TABLET, FILM COATED in 1 BOTTLE, PLASTIC (0378-4517-93)"]},"propertyConceptList":{"propertyConcept":[{"propName":"ANDA","propValue":"ANDA200465"},{"propName":"COLORTEXT","propValue":"BLUE"},{"propName":"COLOR","propValue":"C48333"},{"propName":"DM_SPL_ID","propValue":"633412"},{"propName":"IMPRINT_CODE","propValue":"M;AA8"},{"propName":"LABELER","propValue":"Mylan Pharmaceuticals Inc."},{"propName":"LABEL_TYPE","propValue":"HUMAN PRESCRIPTION DRUG"},{"propName":"MARKETING_CATEGORY","propValue":"ANDA"},{"propName":"MARKETING_EFFECTIVE_TIME_LOW","propValue":"20141106"},{"propName":"MARKETING_STATUS","propValue":"ACTIVE"},{"propName":"SCORE","propValue":"1"},{"propName":"SHAPETEXT","propValue":"barrel shaped"},{"propName":"SHAPE","propValue":"C48345"},{"propName":"SIZE","propValue":"11 mm"}]},"source":"Hybrid"}]}}""";
+    var map = jsonDecode(input);
+    List<druglib.Drug> druglist = searchlib.ReferenceList.fetch(map);
+    var drug = druglist[0];
+    druglib.Drug target = druglib.Drug("", "", "BLUE", "barrel shaped", "11 mm");
+    searchlib.ReferenceList.build(druglist, target);
+    List<druglib.Drug> result = searchlib.ReferenceList.export();
+    searchlib.ReferenceList.clean();
+    expect(result[0], drug);
+    assert(searchlib.ReferenceList.rankMap["rank3"].isEmpty);
   });
 }
