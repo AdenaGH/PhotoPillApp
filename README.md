@@ -4,6 +4,21 @@ PhotoPill is an app that will allow users to enter basic information about a pil
 
 ## Release Notes
 
+### Version 0.4.0:
+#### New Features
+* Implemented API call to find drug rxcui given a medication name
+* Implemented API calling to find drug properties utilizing the rxcui as a parameter 
+* Added functionality to format api response.
+
+#### Bug Fixes
+* State and data is saved across different states, even when navigating through the home page
+* Overflow on patient description page no longer occurs
+
+#### Known Errors
+* Search can happen even with an empty patient medication list
+
+
+---
 ### Version 0.3.0:
 #### New Features
 * Revitalized user interface to allow intuitive navigation between screens.
