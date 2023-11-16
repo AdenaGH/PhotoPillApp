@@ -3,14 +3,12 @@ import 'drug.dart';
 
 class ReferenceList {
   //  static rank map
-  static Map rankMap = {
-    "rank0": <Drug>[],
-    "rank1": <Drug>[],
-    "rank2": <Drug>[],
-    "rank3": <Drug>[],
-    "rank4": <Drug>[]
-  };
-
+  static Map rankMap = {"rank0" : <Drug>[],
+                        "rank1" : <Drug>[],
+                        "rank2" : <Drug>[],
+                        "rank3" : <Drug>[],
+                        "rank4" : <Drug>[]};
+  
   //  fetch drug list
   //  @aipMap Map constructed by api requests
   //  @return a list of drug object

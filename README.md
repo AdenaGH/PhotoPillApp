@@ -4,27 +4,19 @@ PhotoPill is an app that will allow users to enter basic information about a pil
 
 ## Release Notes
 
-### Version 0.1.0:
+### Version 0.4.0:
 #### New Features
-* Added demo home screen with interactive button.
-* Added compatability for both Android and iOS.
+* Implemented API call to find drug rxcui given a medication name
+* Implemented API calling to find drug properties utilizing the rxcui as a parameter 
+* Added functionality to format api response.
 
 #### Bug Fixes
-N/A
-
----
-### Version 0.2.0:
-#### New Features
-* Added ability to manually enter medications by name
-* Manually entered medications are stored locally.
-* Manually entered medications will be displayed in a list on the screen.
-
-#### Bug Fixes
-N/A
+* State and data is saved across different states, even when navigating through the home page
+* Overflow on patient description page no longer occurs
 
 #### Known Errors
-* List of medications will disappear once user switches screens
-* Empty text is allowed as valid input and will appear in lists
+* Search can happen even with an empty patient medication list
+
 
 ---
 ### Version 0.3.0:
@@ -42,3 +34,26 @@ N/A
 * Navigation towards patient medications screen and patient description screen via the initial home page, leads to unsaved items.
 * Potential overflow occurs on patient description page if entered input is too long for specific fields.
 
+
+---
+### Version 0.2.0:
+#### New Features
+* Added ability to manually enter medications by name
+* Manually entered medications are stored locally.
+* Manually entered medications will be displayed in a list on the screen.
+
+#### Bug Fixes
+N/A
+
+#### Known Errors
+* List of medications will disappear once user switches screens
+* Empty text is allowed as valid input and will appear in lists
+
+---
+### Version 0.1.0:
+#### New Features
+* Added demo home screen with interactive button.
+* Added compatability for both Android and iOS.
+
+#### Bug Fixes
+N/A
