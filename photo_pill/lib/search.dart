@@ -32,6 +32,7 @@ class ReferenceList {
           size = concept["propValue"];
         }
       }
+      print(id + color + shape + size);
       drugList.add(Drug("", id, color, shape, size));
     }
     return drugList;
@@ -69,11 +70,7 @@ class ReferenceList {
 
   // clean rank map
   static void clean() {
-    rankMap = {"rank0" : [],
-              "rank1" : [],
-              "rank2" : [],
-              "rank3" : [],
-              "rank4" : []};
+    rankMap = {"rank0": [], "rank1": [], "rank2": [], "rank3": [], "rank4": []};
   }
 
   // export result
