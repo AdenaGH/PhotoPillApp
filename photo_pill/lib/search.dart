@@ -4,11 +4,11 @@ import 'drug.dart';
 class ReferenceList {
   //  static rank map
   static Map rankMap = {
-    "rank0": [],
-    "rank1": [],
-    "rank2": [],
-    "rank3": [],
-    "rank4": []
+    "rank0": <Drug>[],
+    "rank1": <Drug>[],
+    "rank2": <Drug>[],
+    "rank3": <Drug>[],
+    "rank4": <Drug>[]
   };
 
   //  fetch drug list
@@ -16,8 +16,7 @@ class ReferenceList {
   //  @return a list of drug object
   static List<Drug> fetch(Map apiMap) {
     var drugs = apiMap["ndcPropertyList"]["ndcProperty"];
-    print("Printed drugs: " + drugs);
-    List<Drug> drugList = List<Drug>.empty(growable: true);
+    List<Drug> drugList = <Drug>[];
     for (var item in drugs) {
       String id = item["rxcui"];
       var propertyList = item["propertyConceptList"]["propertyConcept"];
@@ -35,6 +34,7 @@ class ReferenceList {
           size = concept["propValue"];
         }
       }
+      print(id + color + shape + size);
       drugList.add(Drug("", id, color, shape, size));
     }
     return drugList;
@@ -77,18 +77,30 @@ class ReferenceList {
 
   // export result
   static List<Drug> export() {
-    List<Drug> list = List<Drug>.empty();
+    List<Drug> list = <Drug>[];
     if (rankMap["rank4"].length != 0) {
-      list.addAll(rankMap["rank4"]);
+      List temp = rankMap["rank4"];
+      for (var item in temp) {
+        list.add(item);
+      }
     }
     if (rankMap["rank3"].length != 0) {
-      list.addAll(rankMap["rank3"]);
+      List temp = rankMap["rank3"];
+      for (var item in temp) {
+        list.add(item);
+      }
     }
     if (rankMap["rank2"].length != 0) {
-      list.addAll(rankMap["rank2"]);
+      List temp = rankMap["rank2"];
+      for (var item in temp) {
+        list.add(item);
+      }
     }
     if (rankMap["rank1"].length != 0) {
-      list.addAll(rankMap["rank1"]);
+      List temp = rankMap["rank1"];
+      for (var item in temp) {
+        list.add(item);
+      }
     }
     return list;
   }

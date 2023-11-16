@@ -8,64 +8,67 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:photo_pill/search.dart';
 import 'drug.dart';
+import 'package:provider/provider.dart';
+import 'MedicationProvider.dart';
 
 //this method retrieves the rxcui string given the list of patient meds
 // WE NEED TO REPLACE THIS API CALL WITH getApproximateMatch, it returns a ranked ordering of rxcui, we can potentially call each one and see which one returns
-Future<Map<String, dynamic>> returnProperties(String drugName) async {
+Future<List<Map<String, dynamic>>> returnProperties(
+    List<String> drugNames) async {
   final String baseUrl = 'https://rxnav.nlm.nih.gov/REST/rxcui.xml';
+  List<Map<String, dynamic>> apiRespFinal = [];
 
-  // Define the parameters for the API call
-  final Map<String, dynamic> firstParams = {
-    'name': drugName,
-    'search':
-        '2', // Set to '0' for exact match, 1 for normalized match, and 2 for best match
-  };
+  for (int i = 0; i < drugNames.length; i++) {
+    try {
+      final Map<String, dynamic> firstParams = {
+        'name': drugNames[i],
+        'search': '2',
+      };
 
-  // Build the full URL with parameters
-  final Uri uri = Uri.parse(baseUrl).replace(queryParameters: firstParams);
-  final http.Response response = await http.get(uri);
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    final XmlDocument xmlDoc = XmlDocument.parse(response.body);
-    final rxNormIdElements = xmlDoc.findAllElements('rxnormId');
-    String rxcui = rxNormIdElements.single.innerText;
-    print(rxcui); //prints rxcui, use this for properties call
-    //now call second api
-    final String baseUrl2 = 'https://rxnav.nlm.nih.gov/REST/ndcproperties.json';
+      final Uri uri = Uri.parse(baseUrl).replace(queryParameters: firstParams);
+      final http.Response response = await http.get(uri);
+      if (response.statusCode == 200) {
+        final XmlDocument xmlDoc = XmlDocument.parse(response.body);
+        final rxNormIdElements = xmlDoc.findAllElements('rxnormId');
+        String rxcui = rxNormIdElements.single.innerText;
+        final String baseUrl2 =
+            'https://rxnav.nlm.nih.gov/REST/ndcproperties.json';
 
-    final Map<String, dynamic> secondParams = {
-      'id': rxcui,
-      'ndcstatus': 'ALL',
-    };
-    final Uri uri2 = Uri.parse(baseUrl2).replace(queryParameters: secondParams);
-    final http.Response response2 = await http.get(uri2);
-    if (response2.statusCode == 200) {
-      try {
-        // Parse the response body directly as JSON
-        Map<String, dynamic> jsonMap = json.decode(response2.body);
-        print(jsonMap);
-        return jsonMap;
-      } catch (e) {
-        throw Exception('Failed to parse JSON response');
+        final Map<String, dynamic> secondParams = {
+          'id': rxcui,
+          'ndcstatus': 'ALL',
+        };
+
+        final Uri uri2 =
+            Uri.parse(baseUrl2).replace(queryParameters: secondParams);
+        final http.Response response2 = await http.get(uri2);
+        if (response2.statusCode == 200) {
+          Map<String, dynamic> jsonMap = json.decode(response2.body);
+          List<Drug> formattedDrugs = ReferenceList.fetch(
+              jsonMap); //ERROR here, not sure why works fine when manually testing with "Lipitor+10+mg+Tab"
+          apiRespFinal.add(
+              {'originalName': drugNames[i], 'formattedDrugs': formattedDrugs});
+        } else {
+          throw Exception(
+              'Failed to load NDC properties: ${response2.reasonPhrase}');
+        }
+      } else {
+        throw Exception('Failed to load drug: ${response.reasonPhrase}');
       }
-    } else {
-      throw Exception(
-          'Failed to load NDC properties: ${response.reasonPhrase}');
+    } catch (e) {
+      // Handle errors for individual drugs
+      print('Error for drug ${drugNames[i]}: $e');
     }
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load drug');
   }
-}
 
+  return apiRespFinal;
+}
+/*
 Future<List<Drug>> formattedProperties(
-    Future<Map<String, dynamic>> propertyResponse) async {
+    List<Map<String, dynamic>> propertyResponse) async {
   try {
     // Wait for the propertyResponse to complete
     Map<String, dynamic> properties = await propertyResponse;
-    print(properties.runtimeType);
     // Process the properties and create a List<Drug>
     List<Drug> drugs = ReferenceList.fetch(properties);
     return drugs;
@@ -74,7 +77,7 @@ Future<List<Drug>> formattedProperties(
     print('Error formatting properties: $e');
     return [];
   }
-}
+}*/
 
 /*
 //this method returns the drug properties given the list of drug rxcui ids
@@ -112,18 +115,24 @@ class searchResults extends StatefulWidget {
 }
 
 class _searchResults extends State<searchResults> {
-  late Future<Map<String, dynamic>> properties;
-  late Future<List<Drug>> formattedProp = Future.value([]);
+  late Future<List<Map<String, dynamic>>> properties;
+  //late Future<List<Drug>> formattedProp = Future.value([]);
 
   @override
   void initState() {
     super.initState();
-    properties = returnProperties(
-        "Lipitor + 10 + mg + Tab"); //hardedcoded for now, need to pass in list of drugs and modify other function as a for loop
+    //properties = returnProperties(
+    //"Lipitor + 10 + mg + Tab"); //hardedcoded for now, need to pass in list of drugs and modify other function as a for loop
+    final medicationProvider =
+        Provider.of<MedicationProvider>(context, listen: false);
+    List<String> drugList = medicationProvider.drugList;
+    properties = returnProperties(drugList);
+    print(properties);
+    /*
     properties.then((propertyMap) {
       formattedProp = formattedProperties(Future.value(propertyMap));
       setState(() {});
-    });
+    });*/
   }
 
   @override
@@ -138,26 +147,41 @@ class _searchResults extends State<searchResults> {
           title: const Text('Fetch Data Example'),
         ),
         body: Center(
-          child: FutureBuilder<List<Drug>>(
-            future: formattedProp,
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+            future: properties,
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Drug> drugs = snapshot.data!;
-                return ListView.builder(
-                  itemCount: drugs.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(drugs[index].name),
-                      // Add other properties as needed
-                    );
-                  },
-                );
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Text('No data available.');
               }
 
-              // By default, show a loading spinner.
-              return const CircularProgressIndicator();
+              List<Map<String, dynamic>> drugDataList = snapshot.data!;
+
+              return ListView.builder(
+                itemCount: drugDataList.length,
+                itemBuilder: (context, index) {
+                  Map<String, dynamic> drugData = drugDataList[index];
+                  List<Drug> drugs = drugData['formattedDrugs'];
+
+                  return Column(
+                    children: [
+                      ListTile(
+                        title:
+                            Text('Original Name: ${drugData['originalName']}'),
+                        // Add other information related to the original drug name
+                      ),
+                      // Now iterate over the formatted drugs
+                      ...drugs.map((drug) => ListTile(
+                            title: Text(drug.name),
+                            // Add other properties as needed
+                          )),
+                    ],
+                  );
+                },
+              );
             },
           ),
         ),
