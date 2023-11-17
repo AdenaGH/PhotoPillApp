@@ -51,6 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 75,
               child: ElevatedButton(
                   onPressed: () {
+                    //ADENA EDITS
+                    if (drugList.isNotEmpty) {
+                    showAlertDialog(context); 
+                    } else {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
