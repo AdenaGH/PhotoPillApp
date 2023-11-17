@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return InputPatientMed();
+                        return const InputPatientMed();
                       }),
                     );
                   },
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return InputDrugDescription();
+                        return const InputDrugDescription();
                       }),
                     );
                   },
