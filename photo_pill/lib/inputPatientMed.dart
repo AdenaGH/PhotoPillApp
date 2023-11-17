@@ -44,18 +44,18 @@ class _InputPatientMedState extends State<InputPatientMed> {
     final drugList = medicationProvider.drugList;
 
     return drugList.isEmpty
-        ? Text('No medications added.')
+        ? const Text('No medications added.')
         : Column(
             children: drugList.map((drugName) {
               return ListTile(
-                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 tileColor: Colors.green,
                 title: Text(
                   drugName,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 trailing: IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   color: Colors.white,
                   onPressed: () {
                     medicationProvider.removeDrugName(drugName);
@@ -89,7 +89,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             buildMedicineList(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -105,7 +105,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Add Drug Name'),
+                    title: const Text('Add Drug Name'),
                     content: TextField(
                       controller: _newDrugNameController,
                     ),
@@ -133,7 +133,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
                             Navigator.of(context).pop(); // Close the dialog
                           }
                         },
-                        child: Text('Add'),
+                        child: const Text('Add'),
                       ),
                     ],
                   );
@@ -143,10 +143,10 @@ class _InputPatientMedState extends State<InputPatientMed> {
             tooltip: 'Add Items',
             child: const Icon(Icons.add),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: clearMedicines,
-            child: Text('Clear Medicines'),
+            child: const Text('Clear Medicines'),
           ),
         ],
       ),

@@ -33,10 +33,10 @@ class ReferenceList {
           size = concept["propValue"];
         }
       }
-      print("ID: " + id);
-      print("Color: " + color);
-      print("Shape: " + shape);
-      print("Size : " + size);
+      print("ID: $id");
+      print("Color: $color");
+      print("Shape: $shape");
+      print("Size : $size");
       drugList.add(Drug("", id, color, shape, size));
     //}
     return drugList;

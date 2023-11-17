@@ -21,13 +21,13 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
         backgroundColor: Colors.lightBlue,
         title: const Text('Drug Description'),
       ),
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height *
             0.95, // Set height to 75% of the screen width
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: "Name",
                 hintText: "Enter drug name or initial characters",
@@ -35,7 +35,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
             ),
             // want to add checkbox here for mg or ml
             // need to find a way to concorprate dosage into Drug field
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: "Dosage",
                 hintText: "Enter dosage amount",
@@ -45,7 +45,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
               children: [
                 Expanded(
                   child: CheckboxListTile(
-                    title: Text("mg"),
+                    title: const Text("mg"),
                     value: isCheckedMg,
                     onChanged: (bool? value) {
                       setState(() {
@@ -57,7 +57,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                 ),
                 Expanded(
                   child: CheckboxListTile(
-                    title: Text("ml"),
+                    title: const Text("ml"),
                     value: isCheckedMl,
                     onChanged: (bool? value) {
                       setState(() {
@@ -69,19 +69,19 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                 )
               ],
             ),
-            TextField(
+            const TextField(
               // currently open ended, could make this drop down in the future
               decoration: InputDecoration(
                 labelText: "Dosage Form",
                 hintText: "Ex: Tablet, Capsule, Powder, Oral, Injection, etc",
               ),
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: "Color",
               ),
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 labelText: "Purpose",
               ),
@@ -92,7 +92,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return searchResults();
+                      return const searchResults();
                     }),
                   );
                 },

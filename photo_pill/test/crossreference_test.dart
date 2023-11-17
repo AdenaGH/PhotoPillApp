@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:photo_pill/search.dart' as searchlib;
 import 'package:photo_pill/drug.dart' as druglib;
-import 'dart:developer' as developer;
 import 'dart:convert';
-import 'dart:io';
 
 void main() {
   test('empty drug object creation test', () {

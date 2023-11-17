@@ -15,7 +15,7 @@ import 'MedicationProvider.dart';
 // WE NEED TO REPLACE THIS API CALL WITH getApproximateMatch, it returns a ranked ordering of rxcui, we can potentially call each one and see which one returns
 Future<List<Map<String, dynamic>>> returnProperties(
     List<String> drugNames) async {
-  final String baseUrl = 'https://rxnav.nlm.nih.gov/REST/rxcui.xml';
+  const String baseUrl = 'https://rxnav.nlm.nih.gov/REST/rxcui.xml';
   List<Map<String, dynamic>> apiRespFinal = [];
 
   for (int i = 0; i < drugNames.length; i++) {
@@ -31,8 +31,8 @@ Future<List<Map<String, dynamic>>> returnProperties(
         final XmlDocument xmlDoc = XmlDocument.parse(response.body);
         final rxNormIdElements = xmlDoc.findAllElements('rxnormId');
         String rxcui = rxNormIdElements.single.innerText;
-        print("RXCUI: " + rxcui);
-        final String baseUrl2 =
+        print("RXCUI: $rxcui");
+        const String baseUrl2 =
             'https://rxnav.nlm.nih.gov/REST/ndcproperties.json';
 
         final Map<String, dynamic> secondParams = {
