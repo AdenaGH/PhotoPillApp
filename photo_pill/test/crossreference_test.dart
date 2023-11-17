@@ -33,6 +33,10 @@ void main() {
     assert(map is Map);
     List<druglib.Drug> druglist = searchlib.ReferenceList.fetch(map);
     var drug = druglist[0];
+    debugPrint(drug.id);
+    debugPrint(drug.color);
+    debugPrint(drug.shape);
+    debugPrint(drug.size);
     expect(drug.id, "597987");
     expect(drug.color, "BLUE");
     expect(drug.shape, "barrel shaped");
@@ -48,6 +52,7 @@ void main() {
     List<druglib.Drug> result = searchlib.ReferenceList.export();
     searchlib.ReferenceList.clean();
     expect(result[0], drug);
+    debugPrint(result);
     assert(searchlib.ReferenceList.rankMap["rank3"].isEmpty);
   });
 }

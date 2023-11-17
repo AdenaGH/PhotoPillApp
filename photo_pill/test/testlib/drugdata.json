@@ -9,7 +9,8 @@
                 "packaging":["30 TABLET, FILM COATED in 1 BOTTLE, PLASTIC (0378-4517-93)"]
             },
             "propertyConceptList":{
-                "propertyConcept":[{"propName":"ANDA","propValue":"ANDA200465"},
+                "propertyConcept":[
+                {"propName":"ANDA","propValue":"ANDA200465"},
                 {"propName":"COLORTEXT","propValue":"BLUE"},
                 {"propName":"COLOR","propValue":"C48333"},
                 {"propName":"DM_SPL_ID","propValue":"633412"},
