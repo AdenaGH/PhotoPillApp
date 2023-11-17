@@ -13,32 +13,43 @@ class ReferenceList {
   //  @aipMap Map constructed by api requests
   //  @return a list of drug object
   static List<Drug> fetch(Map apiMap) {
-    var drugs = apiMap["ndcPropertyList"]["ndcProperty"];
+    var drugs;
+    try {
+      drugs = apiMap["ndcPropertyList"]["ndcProperty"];
+    } catch (e) {
+      throw const FormatException('api data not formated correctly');
+    }
+    if  (drugs.isEmpty) {
+      throw const FormatException('empty api data');
+    }
     List<Drug> drugList = <Drug>[];
-    //for (var item in drugs) { // get rid of for loop for time being
-      var item = drugs[0];
+    for (Map item in drugs) {
+      if (item.keys.isEmpty) {
+        continue;
+      }
       String id = item["rxcui"];
-      var propertyList = item["propertyConceptList"]["propertyConcept"];
       String color = "";
       String shape = "";
       String size = "";
-      for (var concept in propertyList) {
-        if (concept["propName"] == "COLORTEXT") {
-          color = concept["propValue"];
+      try {
+        var propertyList = item["propertyConceptList"]["propertyConcept"];
+        for (var concept in propertyList) {
+          if (concept["propName"] == "COLORTEXT") {
+            color = concept["propValue"];
+          }
+          if (concept["propName"] == "SHAPETEXT") {
+            shape = concept["propValue"];
+          }
+          if (concept["propName"] == "SIZE") {
+            size = concept["propValue"];
+          }
         }
-        if (concept["propName"] == "SHAPETEXT") {
-          shape = concept["propValue"];
-        }
-        if (concept["propName"] == "SIZE") {
-          size = concept["propValue"];
-        }
+        drugList.add(Drug("", id, color, shape, size));
+      } catch (e) {
+        print("drug omitted: $id");
+        continue;
       }
-      print("ID: $id");
-      print("Color: $color");
-      print("Shape: $shape");
-      print("Size : $size");
-      drugList.add(Drug("", id, color, shape, size));
-    //}
+    }
     return drugList;
   }
 
