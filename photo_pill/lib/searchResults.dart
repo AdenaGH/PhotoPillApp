@@ -31,6 +31,7 @@ Future<List<Map<String, dynamic>>> returnProperties(
         final XmlDocument xmlDoc = XmlDocument.parse(response.body);
         final rxNormIdElements = xmlDoc.findAllElements('rxnormId');
         String rxcui = rxNormIdElements.single.innerText;
+        print("RXCUI: " + rxcui);
         final String baseUrl2 =
             'https://rxnav.nlm.nih.gov/REST/ndcproperties.json';
 
@@ -44,6 +45,7 @@ Future<List<Map<String, dynamic>>> returnProperties(
         final http.Response response2 = await http.get(uri2);
         if (response2.statusCode == 200) {
           Map<String, dynamic> jsonMap = json.decode(response2.body);
+          print(jsonMap);
           List<Drug> formattedDrugs = ReferenceList.fetch(
               jsonMap); //ERROR here, not sure why works fine when manually testing with "Lipitor+10+mg+Tab"
           apiRespFinal.add(

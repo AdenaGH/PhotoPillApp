@@ -15,7 +15,8 @@ class ReferenceList {
   static List<Drug> fetch(Map apiMap) {
     var drugs = apiMap["ndcPropertyList"]["ndcProperty"];
     List<Drug> drugList = <Drug>[];
-    for (var item in drugs) {
+    //for (var item in drugs) { // get rid of for loop for time being
+      var item = drugs[0];
       String id = item["rxcui"];
       var propertyList = item["propertyConceptList"]["propertyConcept"];
       String color = "";
@@ -32,9 +33,12 @@ class ReferenceList {
           size = concept["propValue"];
         }
       }
-      print(id + color + shape + size);
+      print("ID: " + id);
+      print("Color: " + color);
+      print("Shape: " + shape);
+      print("Size : " + size);
       drugList.add(Drug("", id, color, shape, size));
-    }
+    //}
     return drugList;
   }
 
