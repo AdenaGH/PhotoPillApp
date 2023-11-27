@@ -14,6 +14,7 @@ class ReferenceList {
   //  @return a list of drug object
   static List<Drug> fetch(Map apiMap) {
     var drugs;
+    Set checked = {};
     try {
       drugs = apiMap["ndcPropertyList"]["ndcProperty"];
     } catch (e) {
@@ -32,19 +33,22 @@ class ReferenceList {
       String shape = "";
       String size = "";
       try {
-        var propertyList = item["propertyConceptList"]["propertyConcept"];
-        for (var concept in propertyList) {
-          if (concept["propName"] == "COLORTEXT") {
-            color = concept["propValue"];
+        if (!checked.contains(id)) {
+          var propertyList = item["propertyConceptList"]["propertyConcept"];
+          for (var concept in propertyList) {
+            if (concept["propName"] == "COLORTEXT") {
+              color = concept["propValue"];
+            }
+            if (concept["propName"] == "SHAPETEXT") {
+              shape = concept["propValue"];
+            }
+            if (concept["propName"] == "SIZE") {
+              size = concept["propValue"];
+            }
           }
-          if (concept["propName"] == "SHAPETEXT") {
-            shape = concept["propValue"];
-          }
-          if (concept["propName"] == "SIZE") {
-            size = concept["propValue"];
-          }
+          drugList.add(Drug("", id, color, shape, size));
+          checked.add(id);
         }
-        drugList.add(Drug("", id, color, shape, size));
       } catch (e) {
         print("drug omitted: $id");
         continue;
