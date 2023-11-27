@@ -3,7 +3,7 @@ class Drug implements Comparable<Drug> {
   //  attributes are set to "DEFAULT" by default
   String name = "DEFAULT";
   String id = "DEFAULT";
-  String color = "DEFAULT";   //{"propName":"COLORTEXT","propValue":"BLUE"}
+  String color = "DEFAULT";   //{"propName":"COLORTEXT","propValue":"WHITE"}
   String shape = "DEFAULT";   //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
   String size = "DEFAULT";    //{"propName":"SIZE","propValue":"11 mm"}
   int rank = -1;
