@@ -66,5 +66,30 @@ class Drug implements Comparable<Drug> {
       return 0;
     }
   }
+  
+  //  print all info
+  //  @return     all existing info of current drug
+  String info() {
+    String s = "";
+    if (name != "DEFAULT") {
+      s += "Name: $name\t";
+    }
+    if (id != "DEFAULT") {
+      s += "ID: $id\t";
+    }
+    if (color != "DEFAULT") {
+      s += "Color: $color\t";
+    }
+    if (shape != "DEFAULT") {
+      s += "Shape: $shape\t";
+    }
+    if (size != "DEFAULT") {
+      s += "Dosage: $size\t";
+    }
+    if (s.isEmpty) {
+      return "Empty info";
+    }
+    return s;
+  }
 }
 
