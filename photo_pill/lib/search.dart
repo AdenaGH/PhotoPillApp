@@ -3,12 +3,14 @@ import 'drug.dart';
 
 class ReferenceList {
   //  static rank map
-  static Map rankMap = {"rank0" : <Drug>[],
-                        "rank1" : <Drug>[],
-                        "rank2" : <Drug>[],
-                        "rank3" : <Drug>[],
-                        "rank4" : <Drug>[]};
-  
+  static Map rankMap = {
+    "rank0": <Drug>[],
+    "rank1": <Drug>[],
+    "rank2": <Drug>[],
+    "rank3": <Drug>[],
+    "rank4": <Drug>[]
+  };
+
   //  fetch drug list
   //  @aipMap Map constructed by api requests
   //  @return a list of drug object
@@ -20,7 +22,7 @@ class ReferenceList {
     } catch (e) {
       throw const FormatException('api data not formated correctly');
     }
-    if  (drugs.isEmpty) {
+    if (drugs.isEmpty) {
       throw const FormatException('empty api data');
     }
     List<Drug> drugList = <Drug>[];
