@@ -50,7 +50,7 @@ void main() {
     List<druglib.Drug> result = searchlib.ReferenceList.export();
     searchlib.ReferenceList.clean();
     expect(result[0], drug);
-    debugPrint(result);
+    debugPrint(result as String?);
     assert(searchlib.ReferenceList.rankMap["rank3"].isEmpty);
   });
 }
