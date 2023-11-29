@@ -45,7 +45,7 @@ Future<List<Drug>> returnProperties(List<String> drugNames) async {
         final http.Response response2 = await http.get(uri2);
         if (response2.statusCode == 200) {
           Map<String, dynamic> jsonMap = json.decode(response2.body);
-          Drug formattedDrug = ReferenceList.fetch(jsonMap)[0];
+          Drug formattedDrug = ReferenceList.fetch(drugNames[i], jsonMap)[0];
           //print(formattedDrug);
           drugList.add(formattedDrug);
         } else {
@@ -63,7 +63,7 @@ Future<List<Drug>> returnProperties(List<String> drugNames) async {
   //now call build with drugList
   // CHANGE THIS, from hardcoded Drug(" ", " ", "WHITE", " ", " ") to an actual Drug object we can access. This drug object should be made using the fields we enter into the drug description page.
   //Map drugsRanked =
-  ReferenceList.build(drugList, Drug(" ", " ", "WHITE", " ", " "));
+  ReferenceList.build(drugList, Drug(" ", " ", " ", "", "10 mm"));
   List<Drug> rankedDrugsInfo = ReferenceList.export();
   //return rankedDrugsInfo;
   return rankedDrugsInfo;
@@ -110,6 +110,12 @@ class _searchResults extends State<searchResults> {
         appBar: AppBar(
           title: const Text('Search Results'),
           centerTitle: true, // Center-align the title
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Go back to the previous screen
+            },
+          ),
         ),
         body: Center(
           child: FutureBuilder<List<Drug>>(
@@ -130,20 +136,31 @@ class _searchResults extends State<searchResults> {
                 itemBuilder: (context, index) {
                   //Drug drugData = drugDataList[index];
                   List<Drug> drugs = drugDataList;
-                  final medicationProvider =
-                      Provider.of<MedicationProvider>(context, listen: false);
-                  List<String> drugList = medicationProvider.drugList;
+
                   return Column(
                     children: [
                       ListTile(
-                        title: Text('Original Name: ${drugList[index]}'),
-                        // Add other information related to the original drug name
+                        title: Text(
+                          'Original Name: ${drugs[index].name}',
+                          // Add other information related to the original drug name
+                        ),
                       ),
-                      // Now iterate over the formatted drugs
-                      ...drugs.map((drug) => ListTile(
-                            title: Text(drug
-                                .info()), // Use the info method to display drug information
-                            // Add other properties as needed
+                      // Now iterate over the drugs
+                      ...drugs.map((drug) => Column(
+                            children: [
+                              ListTile(
+                                title: Text('ID: ${drug.id}'),
+                              ),
+                              ListTile(
+                                title: Text('Color: ${drug.color}'),
+                              ),
+                              ListTile(
+                                title: Text('Shape: ${drug.shape}'),
+                              ),
+                              ListTile(
+                                title: Text('Size: ${drug.size}'),
+                              ),
+                            ],
                           )),
                     ],
                   );

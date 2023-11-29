@@ -14,7 +14,7 @@ class ReferenceList {
   //  fetch drug list
   //  @aipMap Map constructed by api requests
   //  @return a list of drug object
-  static List<Drug> fetch(Map apiMap) {
+  static List<Drug> fetch(String drugName, Map apiMap) {
     var drugs;
     Set checked = {};
     try {
@@ -30,6 +30,7 @@ class ReferenceList {
       if (item.keys.isEmpty) {
         continue;
       }
+      String name = drugName;
       String id = item["rxcui"];
       String color = "";
       String shape = "";
@@ -48,7 +49,7 @@ class ReferenceList {
               size = concept["propValue"];
             }
           }
-          drugList.add(Drug("", id, color, shape, size));
+          drugList.add(Drug(name, id, color, shape, size));
           checked.add(id);
         }
       } catch (e) {
