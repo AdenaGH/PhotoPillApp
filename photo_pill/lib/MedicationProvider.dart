@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MedicationProvider with ChangeNotifier {
   List<String> _drugList = [];
 
-  // Constructor to initialize with a list of drugs
+  // initialize with a list of drugs
   MedicationProvider(List<String> initialDrugs) {
     _drugList = initialDrugs;
   }
