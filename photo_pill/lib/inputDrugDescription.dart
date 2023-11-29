@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photo_pill/searchResults.dart';
+import 'package:provider/provider.dart';
+import 'MedicationProvider.dart';
 
 class InputDrugDescription extends StatefulWidget {
   const InputDrugDescription({Key? key}) : super(key: key);
@@ -87,20 +89,45 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {
-                  //need to add checks for if druglist is empty
+              onPressed: () {
+                final medicationProvider =
+                    Provider.of<MedicationProvider>(context, listen: false);
+                List<String> drugList = medicationProvider.drugList;
+                if (drugList.isEmpty) {
+                  // Show an alert dialog
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Error'),
+                        content: Text(
+                            'Drug list is empty. Please add drugs before trying to search.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Close the dialog
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
                       return const searchResults();
                     }),
                   );
-                },
-                child: const Text(
-                  'Search',
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.center,
-                )),
+                }
+              },
+              child: const Text(
+                'Search',
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            )
           ],
         ),
       ),
