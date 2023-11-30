@@ -13,38 +13,40 @@ class Drug implements Comparable<Drug> {
   //  pass in "" if empty input
   Drug(String name, String id, String color, String shape, String size) {
     if (name.isNotEmpty) {
-      this.name = name;
+      this.name = name.trim().toUpperCase();
     }
     if (id.isNotEmpty) {
-      this.id = id;
+      this.id = id.trim().toUpperCase();
     }
     if (color.isNotEmpty) {
-      this.color = color;
+      this.color = color.trim().toUpperCase();
     }
     if (shape.isNotEmpty) {
-      this.shape = shape;
+      this.shape = shape.trim().toUpperCase();
     }
     if (size.isNotEmpty) {
-      this.size = size;
+      this.size = size.trim().toUpperCase();
     }
   }
+
+  
 
   //  get & set rank
   //  @target       target drug
   int getRank(Drug target) {
     int temp = 0;
-    if (target.name != "DEFAULT" && target.name == name) {
+    if (target.name != "DEFAULT" && name.contains(target.name)) {
       temp++;
-    } else if (target.id != "DEFAULT" && target.id == id) {
-      temp++;
-    }
-    if (target.color != "DEFAULT" && target.color == color) {
+    } else if (target.id != "DEFAULT" && id.contains(target.id)) {
       temp++;
     }
-    if (target.shape != "DEFAULT" && target.shape == shape) {
+    if (target.color != "DEFAULT" && color.contains(target.color)) {
       temp++;
     }
-    if (target.size != "DEFAULT" && target.size == size) {
+    if (target.shape != "DEFAULT" && shape.contains(target.shape)) {
+      temp++;
+    }
+    if (target.size != "DEFAULT" && size.contains(target.size)) {
       temp++;
     }
     rank = temp;
