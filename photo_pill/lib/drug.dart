@@ -1,11 +1,11 @@
-
 class Drug implements Comparable<Drug> {
   //  attributes are set to "DEFAULT" by default
   String name = "DEFAULT";
   String id = "DEFAULT";
-  String color = "DEFAULT";   //{"propName":"COLORTEXT","propValue":"BLUE"}
-  String shape = "DEFAULT";   //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
-  String size = "DEFAULT";    //{"propName":"SIZE","propValue":"11 mm"}
+  String color = "DEFAULT"; //{"propName":"COLORTEXT","propValue":"WHITE"}
+  String shape =
+      "DEFAULT"; //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
+  String size = "DEFAULT"; //{"propName":"SIZE","propValue":"11 mm"}
   int rank = -1;
 
   //  constructor
@@ -40,9 +40,11 @@ class Drug implements Comparable<Drug> {
     }
     if (target.color != "DEFAULT" && target.color == color) {
       temp++;
-    }if (target.shape != "DEFAULT" && target.shape == shape) {
+    }
+    if (target.shape != "DEFAULT" && target.shape == shape) {
       temp++;
-    }if (target.size != "DEFAULT" && target.size == size) {
+    }
+    if (target.size != "DEFAULT" && target.size == size) {
       temp++;
     }
     rank = temp;
@@ -66,7 +68,7 @@ class Drug implements Comparable<Drug> {
       return 0;
     }
   }
-  
+
   //  print all info
   //  @return     all existing info of current drug
   String info() {
@@ -92,4 +94,3 @@ class Drug implements Comparable<Drug> {
     return s;
   }
 }
-

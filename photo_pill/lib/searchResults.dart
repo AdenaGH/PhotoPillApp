@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:photo_pill/inputDrugDescription.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:xml/xml.dart'
     show XmlDocument, XmlElement; // Import the xml package
@@ -13,11 +14,10 @@ import 'MedicationProvider.dart';
 
 //this method retrieves the rxcui string given the list of patient meds
 // WE NEED TO REPLACE THIS API CALL WITH getApproximateMatch, it returns a ranked ordering of rxcui, we can potentially call each one and see which one returns
-Future<List<Map<String, dynamic>>> returnProperties(
-    List<String> drugNames) async {
+Future<List<Drug>> returnProperties(List<String> drugNames) async {
   const String baseUrl = 'https://rxnav.nlm.nih.gov/REST/rxcui.xml';
-  List<Map<String, dynamic>> apiRespFinal = [];
-
+  List<Map<String, dynamic>> apiRespFinalPrint = [];
+  List<Drug> drugList = [];
   for (int i = 0; i < drugNames.length; i++) {
     try {
       final Map<String, dynamic> firstParams = {
@@ -31,7 +31,7 @@ Future<List<Map<String, dynamic>>> returnProperties(
         final XmlDocument xmlDoc = XmlDocument.parse(response.body);
         final rxNormIdElements = xmlDoc.findAllElements('rxnormId');
         String rxcui = rxNormIdElements.single.innerText;
-        print("RXCUI: $rxcui");
+        //print("RXCUI: $rxcui");
         const String baseUrl2 =
             'https://rxnav.nlm.nih.gov/REST/ndcproperties.json';
 
@@ -45,11 +45,9 @@ Future<List<Map<String, dynamic>>> returnProperties(
         final http.Response response2 = await http.get(uri2);
         if (response2.statusCode == 200) {
           Map<String, dynamic> jsonMap = json.decode(response2.body);
-          print(jsonMap);
-          List<Drug> formattedDrugs = ReferenceList.fetch(
-              jsonMap); //ERROR here, not sure why works fine when manually testing with "Lipitor+10+mg+Tab"
-          apiRespFinal.add(
-              {'originalName': drugNames[i], 'formattedDrugs': formattedDrugs});
+          Drug formattedDrug = ReferenceList.fetch(drugNames[i], jsonMap)[0];
+          //print(formattedDrug);
+          drugList.add(formattedDrug);
         } else {
           throw Exception(
               'Failed to load NDC properties: ${response2.reasonPhrase}');
@@ -62,50 +60,14 @@ Future<List<Map<String, dynamic>>> returnProperties(
       print('Error for drug ${drugNames[i]}: $e');
     }
   }
-
-  return apiRespFinal;
+  //now call build with drugList
+  // CHANGE THIS, from hardcoded Drug(" ", " ", "WHITE", " ", " ") to an actual Drug object we can access. This drug object should be made using the fields we enter into the drug description page.
+  //Map drugsRanked =
+  ReferenceList.build(drugList, Drug(" ", " ", " ", "", "10 mm"));
+  List<Drug> rankedDrugsInfo = ReferenceList.export();
+  //return rankedDrugsInfo;
+  return rankedDrugsInfo;
 }
-/*
-Future<List<Drug>> formattedProperties(
-    List<Map<String, dynamic>> propertyResponse) async {
-  try {
-    // Wait for the propertyResponse to complete
-    Map<String, dynamic> properties = await propertyResponse;
-    // Process the properties and create a List<Drug>
-    List<Drug> drugs = ReferenceList.fetch(properties);
-    return drugs;
-  } catch (e) {
-    // Handle any errors that might occur
-    print('Error formatting properties: $e');
-    return [];
-  }
-}*/
-
-/*
-//this method returns the drug properties given the list of drug rxcui ids
-Future<Map<String, dynamic>> getNDCProperties(String rxcui) async {
-  final String baseUrl = 'https://rxnav.nlm.nih.gov/REST/ndcproperties.json';
-
-  final Map<String, dynamic> params = {
-    'id': rxcui,
-    'ndcstatus': 'ALL',
-  };
-
-  final Uri uri = Uri.parse(baseUrl).replace(queryParameters: params);
-  final http.Response response = await http.get(uri);
-
-  if (response.statusCode == 200) {
-    try {
-      // Parse the response body directly as JSON
-      Map<String, dynamic> parsed = json.decode(response.body);
-      return parsed;
-    } catch (e) {
-      throw Exception('Failed to parse JSON response');
-    }
-  } else {
-    throw Exception('Failed to load NDC properties: ${response.reasonPhrase}');
-  }
-}*/
 
 void main() => runApp(const searchResults());
 
@@ -117,7 +79,7 @@ class searchResults extends StatefulWidget {
 }
 
 class _searchResults extends State<searchResults> {
-  late Future<List<Map<String, dynamic>>> properties;
+  late Future<List<Drug>> properties;
   //late Future<List<Drug>> formattedProp = Future.value([]);
 
   @override
@@ -140,16 +102,23 @@ class _searchResults extends State<searchResults> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fetch Data Example',
+      title: 'Search Results',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Fetch Data Example'),
+          title: const Text('Search Results'),
+          centerTitle: true, // Center-align the title
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Go back to the previous screen
+            },
+          ),
         ),
         body: Center(
-          child: FutureBuilder<List<Map<String, dynamic>>>(
+          child: FutureBuilder<List<Drug>>(
             future: properties,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -160,25 +129,38 @@ class _searchResults extends State<searchResults> {
                 return const Text('No data available.');
               }
 
-              List<Map<String, dynamic>> drugDataList = snapshot.data!;
+              List<Drug> drugDataList = snapshot.data!;
 
               return ListView.builder(
                 itemCount: drugDataList.length,
                 itemBuilder: (context, index) {
-                  Map<String, dynamic> drugData = drugDataList[index];
-                  List<Drug> drugs = drugData['formattedDrugs'];
+                  //Drug drugData = drugDataList[index];
+                  List<Drug> drugs = drugDataList;
 
                   return Column(
                     children: [
                       ListTile(
-                        title:
-                            Text('Original Name: ${drugData['originalName']}'),
-                        // Add other information related to the original drug name
+                        title: Text(
+                          'Original Name: ${drugs[index].name}',
+                          // Add other information related to the original drug name
+                        ),
                       ),
-                      // Now iterate over the formatted drugs
-                      ...drugs.map((drug) => ListTile(
-                            title: Text(drug.name),
-                            // Add other properties as needed
+                      // Now iterate over the drugs
+                      ...drugs.map((drug) => Column(
+                            children: [
+                              ListTile(
+                                title: Text('ID: ${drug.id}'),
+                              ),
+                              ListTile(
+                                title: Text('Color: ${drug.color}'),
+                              ),
+                              ListTile(
+                                title: Text('Shape: ${drug.shape}'),
+                              ),
+                              ListTile(
+                                title: Text('Size: ${drug.size}'),
+                              ),
+                            ],
                           )),
                     ],
                   );
