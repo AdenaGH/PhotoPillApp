@@ -7,25 +7,43 @@ class Drug implements Comparable<Drug> {
       "DEFAULT"; //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
   String size = "DEFAULT"; //{"propName":"SIZE","propValue":"11 mm"}
   int rank = -1;
+  Set<String> keywords = {};
 
   //  constructor
   Drug.empty();
   //  pass in "" if empty input
   Drug(String name, String id, String color, String shape, String size) {
+    List<String> temp = [];
     if (name.isNotEmpty) {
       this.name = name.trim().toUpperCase();
     }
     if (id.isNotEmpty) {
       this.id = id.trim().toUpperCase();
+      temp = this.id.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+      }
     }
     if (color.isNotEmpty) {
       this.color = color.trim().toUpperCase();
+      temp = this.color.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+      }
     }
     if (shape.isNotEmpty) {
       this.shape = shape.trim().toUpperCase();
+      temp = this.shape.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+      }
     }
     if (size.isNotEmpty) {
       this.size = size.trim().toUpperCase();
+      temp = this.size.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+      }
     }
   }
 

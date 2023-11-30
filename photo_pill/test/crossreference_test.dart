@@ -5,6 +5,14 @@ import 'package:photo_pill/drug.dart' as druglib;
 import 'dart:convert';
 
 void main() {
+  test('keyword test', () {
+    druglib.Drug drug = druglib.Drug("", "", "BLUE", "barrel shaped", "11 mm");
+    debugPrint(drug.keywords);
+    expect(drug.name, "DEFAULT");
+    expect(drug.color, "BLUE");
+    expect(drug.shape, "barrel shaped");
+    expect(drug.size, "11 mm");
+  });
   test('empty drug object creation test', () {
     druglib.Drug drug = druglib.Drug.empty();
     expect(drug.name, "DEFAULT");
