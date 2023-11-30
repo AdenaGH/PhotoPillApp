@@ -1,11 +1,11 @@
-
 class Drug implements Comparable<Drug> {
   //  attributes are set to "DEFAULT" by default
   String name = "DEFAULT";
   String id = "DEFAULT";
-  String color = "DEFAULT";   //{"propName":"COLORTEXT","propValue":"BLUE"}
-  String shape = "DEFAULT";   //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
-  String size = "DEFAULT";    //{"propName":"SIZE","propValue":"11 mm"}
+  String color = "DEFAULT"; //{"propName":"COLORTEXT","propValue":"WHITE"}
+  String shape =
+      "DEFAULT"; //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
+  String size = "DEFAULT"; //{"propName":"SIZE","propValue":"11 mm"}
   int rank = -1;
 
   //  constructor
@@ -37,14 +37,16 @@ class Drug implements Comparable<Drug> {
     int temp = 0;
     if (target.name != "DEFAULT" && name.contains(target.name)) {
       temp++;
-    } else if (target.id != "DEFAULT" && id.contains(target.name)) {
+    } else if (target.id != "DEFAULT" && id.contains(target.id)) {
       temp++;
     }
-    if (target.color != "DEFAULT" && color.contains(target.name)) {
+    if (target.color != "DEFAULT" && color.contains(target.color)) {
       temp++;
-    }if (target.shape != "DEFAULT" && shape.contains(target.name)) {
+    }
+    if (target.shape != "DEFAULT" && shape.contains(target.shape)) {
       temp++;
-    }if (target.size != "DEFAULT" && size.contains(target.name)) {
+    }
+    if (target.size != "DEFAULT" && size.contains(target.size)) {
       temp++;
     }
     rank = temp;
@@ -68,7 +70,7 @@ class Drug implements Comparable<Drug> {
       return 0;
     }
   }
-  
+
   //  print all info
   //  @return     all existing info of current drug
   String info() {
@@ -94,4 +96,3 @@ class Drug implements Comparable<Drug> {
     return s;
   }
 }
-

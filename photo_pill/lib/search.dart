@@ -3,16 +3,18 @@ import 'drug.dart';
 
 class ReferenceList {
   //  static rank map
-  static Map rankMap = {"rank0" : <Drug>[],
-                        "rank1" : <Drug>[],
-                        "rank2" : <Drug>[],
-                        "rank3" : <Drug>[],
-                        "rank4" : <Drug>[]};
-  
+  static Map rankMap = {
+    "rank0": <Drug>[],
+    "rank1": <Drug>[],
+    "rank2": <Drug>[],
+    "rank3": <Drug>[],
+    "rank4": <Drug>[]
+  };
+
   //  fetch drug list
   //  @aipMap Map constructed by api requests
   //  @return a list of drug object
-  static List<Drug> fetch(Map apiMap) {
+  static List<Drug> fetch(String drugName, Map apiMap) {
     var drugs;
     Set checked = {};
     try {
@@ -20,7 +22,7 @@ class ReferenceList {
     } catch (e) {
       throw const FormatException('api data not formated correctly');
     }
-    if  (drugs.isEmpty) {
+    if (drugs.isEmpty) {
       throw const FormatException('empty api data');
     }
     List<Drug> drugList = <Drug>[];
@@ -28,6 +30,7 @@ class ReferenceList {
       if (item.keys.isEmpty) {
         continue;
       }
+      String name = drugName;
       String id = item["rxcui"];
       String color = "";
       String shape = "";
@@ -46,7 +49,7 @@ class ReferenceList {
               size = concept["propValue"];
             }
           }
-          drugList.add(Drug("", id, color, shape, size));
+          drugList.add(Drug(name, id, color, shape, size));
           checked.add(id);
         }
       } catch (e) {
