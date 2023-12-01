@@ -181,7 +181,12 @@ class _InputPatientMedState extends State<InputPatientMed> {
                               ),
                             );
 
-                            Navigator.of(context).pop(); // Close the dialog
+
+                            setState(() {
+                              isVisible = false;
+                            });
+
+                            Navigator.of(context).pop(); // Clear and Close the dialog
                           }
                         },
                         child: const Text('Add'),
