@@ -45,8 +45,9 @@ class MedicationProvider with ChangeNotifier {
   }
 
   // Edit a drug name at a specific index
+  // partial update for edit drug name
   void editDrugName(int index, String editedDrugName) {
-    if (index >= 0 && index < _drugList.length) {
+    if (index >= 0 && index <= _drugList.length - 1) {
       _drugList[index] = editedDrugName;
       notifyListeners();
     }
