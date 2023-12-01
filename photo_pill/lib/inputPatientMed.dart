@@ -13,11 +13,12 @@ class InputPatientMed extends StatefulWidget {
 
 class _InputPatientMedState extends State<InputPatientMed> {
   final TextEditingController _newDrugNameController = TextEditingController();
-  
+  bool isVisible = true;
   void clearAllData() {
-  final medicationProvider = Provider.of<MedicationProvider>(context, listen: false);
-  medicationProvider.clearAllData();
-}
+    final medicationProvider =
+        Provider.of<MedicationProvider>(context, listen: false);
+    medicationProvider.clearAllData();
+  }
 
   @override
   void initState() {
@@ -34,7 +35,8 @@ class _InputPatientMedState extends State<InputPatientMed> {
   Future<void> _loadDrugList() async {
     final prefs = await SharedPreferences.getInstance();
     final drugList = prefs.getStringList('drugList') ?? [];
-    final medicationProvider = Provider.of<MedicationProvider>(context, listen: false);
+    final medicationProvider =
+        Provider.of<MedicationProvider>(context, listen: false);
 
     // Clear the drug list when loading
     medicationProvider.clearMedicines();
@@ -82,7 +84,9 @@ class _InputPatientMedState extends State<InputPatientMed> {
                       color: Colors.white,
                       onPressed: () {
                         medicationProvider.removeDrugName(drugName);
-                        final updatedDrugList = [...medicationProvider.drugList];
+                        final updatedDrugList = [
+                          ...medicationProvider.drugList
+                        ];
                         _saveDrugList(updatedDrugList);
                       },
                     ),
@@ -176,8 +180,9 @@ class _InputPatientMedState extends State<InputPatientMed> {
                                     listen: false);
                             medicationProvider.addDrugName(newDrugName);
 
-                            final updatedDrugList =
-                                [...medicationProvider.drugList];
+                            final updatedDrugList = [
+                              ...medicationProvider.drugList
+                            ];
                             _saveDrugList(updatedDrugList);
 
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -186,12 +191,12 @@ class _InputPatientMedState extends State<InputPatientMed> {
                               ),
                             );
 
-
                             setState(() {
                               isVisible = false;
                             });
 
-                            Navigator.of(context).pop(); // Clear and Close the dialog
+                            Navigator.of(context)
+                                .pop(); // Clear and Close the dialog
                           }
                         },
                         child: const Text('Add'),

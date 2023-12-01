@@ -12,12 +12,14 @@ import 'drug.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
 
-//this method retrieves the rxcui string given the list of patient meds
-// WE NEED TO REPLACE THIS API CALL WITH getApproximateMatch, it returns a ranked ordering of rxcui, we can potentially call each one and see which one returns
+/**
+ * @param drugNames: the list of patient medications that we pass in to look up properties
+ * @param descriptionDrug: the patient descriptions that we convert to a drug, primary means of comparison
+ * @returns a list of drugs, ranked in order given the cross-referencing
+ */
 Future<List<Drug>> returnProperties(
     List<String> drugNames, Drug descriptionDrug) async {
   const String baseUrl = 'https://rxnav.nlm.nih.gov/REST/rxcui.xml';
-  List<Map<String, dynamic>> apiRespFinalPrint = [];
   List<Drug> drugList = [];
   for (int i = 0; i < drugNames.length; i++) {
     try {
@@ -32,7 +34,6 @@ Future<List<Drug>> returnProperties(
         final XmlDocument xmlDoc = XmlDocument.parse(response.body);
         final rxNormIdElements = xmlDoc.findAllElements('rxnormId');
         String rxcui = rxNormIdElements.single.innerText;
-        //print("RXCUI: $rxcui");
         const String baseUrl2 =
             'https://rxnav.nlm.nih.gov/REST/ndcproperties.json';
 
@@ -48,7 +49,6 @@ Future<List<Drug>> returnProperties(
           Map<String, dynamic> jsonMap = json.decode(response2.body);
           Map<String, String> idNameMap = {rxcui: drugNames[i]};
           Drug formattedDrug = ReferenceList.fetch(idNameMap, jsonMap)[0];
-          //print(formattedDrug);
           drugList.add(formattedDrug);
         } else {
           throw Exception(
@@ -62,11 +62,8 @@ Future<List<Drug>> returnProperties(
       print('Error for drug ${drugNames[i]}: $e');
     }
   }
-  print(descriptionDrug.info());
-  ReferenceList.build(drugList,
-      descriptionDrug); //NEED TO PASS descriptionDrug here as the second parameter
+  ReferenceList.build(drugList, descriptionDrug);
   List<Drug> rankedDrugsInfo = ReferenceList.export();
-  //return rankedDrugsInfo;
   return rankedDrugsInfo;
 }
 
@@ -89,18 +86,10 @@ class _searchResults extends State<searchResults> {
   void initState() {
     super.initState();
     Drug descriptionDrug = widget.descriptionDrug;
-    //properties = returnProperties(
-    //"Lipitor + 10 + mg + Tab"); //hardedcoded for now, need to pass in list of drugs and modify other function as a for loop
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
     List<String> drugList = medicationProvider.drugList;
     properties = returnProperties(drugList, descriptionDrug);
-    print(properties);
-    /*
-    properties.then((propertyMap) {
-      formattedProp = formattedProperties(Future.value(propertyMap));
-      setState(() {});
-    });*/
   }
 
   @override
@@ -113,11 +102,12 @@ class _searchResults extends State<searchResults> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Search Results'),
-          centerTitle: true, // Center-align the title
+          centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context); // Go back to the previous screen
+              ReferenceList.clean();
+              Navigator.pop(context);
             },
           ),
         ),
@@ -138,34 +128,43 @@ class _searchResults extends State<searchResults> {
               return ListView.builder(
                 itemCount: drugDataList.length,
                 itemBuilder: (context, index) {
-                  //Drug drugData = drugDataList[index];
-                  List<Drug> drugs = drugDataList;
+                  Drug drug = drugDataList[index];
 
                   return Column(
                     children: [
                       ListTile(
-                        title: Text(
-                          'Original Name: ${drugs[index].name}',
-                          // Add other information related to the original drug name
+                        title: RichText(
+                          text: TextSpan(
+                            style: DefaultTextStyle.of(context).style,
+                            children: [
+                              TextSpan(
+                                text: 'Name: ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                  text: '${drug.name}',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
                       ),
-                      // Now iterate over the drugs
-                      ...drugs.map((drug) => Column(
-                            children: [
-                              ListTile(
-                                title: Text('ID: ${drug.id}'),
-                              ),
-                              ListTile(
-                                title: Text('Color: ${drug.color}'),
-                              ),
-                              ListTile(
-                                title: Text('Shape: ${drug.shape}'),
-                              ),
-                              ListTile(
-                                title: Text('Size: ${drug.size}'),
-                              ),
-                            ],
-                          )),
+                      ListTile(
+                        title: Text('ID: ${drug.id}'),
+                      ),
+                      ListTile(
+                        title: Text('Color: ${drug.color}'),
+                      ),
+                      ListTile(
+                        title: Text('Shape: ${drug.shape}'),
+                      ),
+                      ListTile(
+                        title: Text('Size: ${drug.size}'),
+                      ),
+                      Divider(
+                          color: Colors.deepPurple,
+                          thickness: 1.5,
+                          height: 10.0), // A divider to separate sections
                     ],
                   );
                 },
