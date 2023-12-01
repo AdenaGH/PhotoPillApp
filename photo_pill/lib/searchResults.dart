@@ -14,7 +14,8 @@ import 'MedicationProvider.dart';
 
 //this method retrieves the rxcui string given the list of patient meds
 // WE NEED TO REPLACE THIS API CALL WITH getApproximateMatch, it returns a ranked ordering of rxcui, we can potentially call each one and see which one returns
-Future<List<Drug>> returnProperties(List<String> drugNames) async {
+Future<List<Drug>> returnProperties(
+    List<String> drugNames, Drug descriptionDrug) async {
   const String baseUrl = 'https://rxnav.nlm.nih.gov/REST/rxcui.xml';
   List<Map<String, dynamic>> apiRespFinalPrint = [];
   List<Drug> drugList = [];
@@ -45,7 +46,8 @@ Future<List<Drug>> returnProperties(List<String> drugNames) async {
         final http.Response response2 = await http.get(uri2);
         if (response2.statusCode == 200) {
           Map<String, dynamic> jsonMap = json.decode(response2.body);
-          Drug formattedDrug = ReferenceList.fetch(drugNames[i], jsonMap)[0];
+          Map<String, String> idNameMap = {rxcui: drugNames[i]};
+          Drug formattedDrug = ReferenceList.fetch(idNameMap, jsonMap)[0];
           //print(formattedDrug);
           drugList.add(formattedDrug);
         } else {
@@ -60,19 +62,20 @@ Future<List<Drug>> returnProperties(List<String> drugNames) async {
       print('Error for drug ${drugNames[i]}: $e');
     }
   }
-  //now call build with drugList
-  // CHANGE THIS, from hardcoded Drug(" ", " ", "WHITE", " ", " ") to an actual Drug object we can access. This drug object should be made using the fields we enter into the drug description page.
-  //Map drugsRanked =
-  ReferenceList.build(drugList, Drug(" ", " ", " ", "", "10 mm"));
+  print(descriptionDrug.info());
+  ReferenceList.build(drugList,
+      descriptionDrug); //NEED TO PASS descriptionDrug here as the second parameter
   List<Drug> rankedDrugsInfo = ReferenceList.export();
   //return rankedDrugsInfo;
   return rankedDrugsInfo;
 }
 
-void main() => runApp(const searchResults());
+void main() => runApp(searchResults(descriptionDrug: Drug("", "", "", "", "")));
 
 class searchResults extends StatefulWidget {
-  const searchResults({super.key});
+  final Drug descriptionDrug; // Add this line
+
+  searchResults({Key? key, required this.descriptionDrug}) : super(key: key);
 
   @override
   State<searchResults> createState() => _searchResults();
@@ -85,12 +88,13 @@ class _searchResults extends State<searchResults> {
   @override
   void initState() {
     super.initState();
+    Drug descriptionDrug = widget.descriptionDrug;
     //properties = returnProperties(
     //"Lipitor + 10 + mg + Tab"); //hardedcoded for now, need to pass in list of drugs and modify other function as a for loop
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
     List<String> drugList = medicationProvider.drugList;
-    properties = returnProperties(drugList);
+    properties = returnProperties(drugList, descriptionDrug);
     print(properties);
     /*
     properties.then((propertyMap) {

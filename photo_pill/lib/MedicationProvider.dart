@@ -28,9 +28,18 @@ class MedicationProvider with ChangeNotifier {
     _drugList = newDrugList;
     notifyListeners();
   }
-  
+
+  // Remove a drug from the list
   void removeDrugName(String drugName) {
     _drugList.remove(drugName);
     notifyListeners();
+  }
+
+  // Edit a drug name at a specific index
+  void editDrugName(int index, String editedDrugName) {
+    if (index >= 0 && index < _drugList.length) {
+      _drugList[index] = editedDrugName;
+      notifyListeners();
+    }
   }
 }

@@ -3,51 +3,61 @@ class Drug implements Comparable<Drug> {
   String name = "DEFAULT";
   String id = "DEFAULT";
   String color = "DEFAULT"; //{"propName":"COLORTEXT","propValue":"WHITE"}
-  String shape =
-      "DEFAULT"; //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
+  String shape = "DEFAULT"; //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
   String size = "DEFAULT"; //{"propName":"SIZE","propValue":"11 mm"}
-  int rank = -1;
+  double rank = -1;
+  Set<String> keywords = {};
 
   //  constructor
   Drug.empty();
   //  pass in "" if empty input
   Drug(String name, String id, String color, String shape, String size) {
+    List<String> temp = [];
     if (name.isNotEmpty) {
-      this.name = name;
+      this.name = name.trim().toUpperCase();
     }
     if (id.isNotEmpty) {
-      this.id = id;
+      this.id = id.trim().toUpperCase();
+      temp = this.id.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+      }
     }
     if (color.isNotEmpty) {
-      this.color = color;
+      this.color = color.trim().toUpperCase();
+      temp = this.color.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+      }
     }
     if (shape.isNotEmpty) {
-      this.shape = shape;
+      this.shape = shape.trim().toUpperCase();
+      temp = this.shape.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+      }
     }
     if (size.isNotEmpty) {
-      this.size = size;
+      this.size = size.trim().toUpperCase();
+      temp = this.size.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+      }
     }
   }
 
+  
+
   //  get & set rank
   //  @target       target drug
-  int getRank(Drug target) {
+  double getRank(Drug target) {
     int temp = 0;
-    if (target.name != "DEFAULT" && target.name == name) {
-      temp++;
-    } else if (target.id != "DEFAULT" && target.id == id) {
-      temp++;
+    for (String word in target.keywords) {
+      if(keywords.contains(word)) {
+        temp++;
+      }
     }
-    if (target.color != "DEFAULT" && target.color == color) {
-      temp++;
-    }
-    if (target.shape != "DEFAULT" && target.shape == shape) {
-      temp++;
-    }
-    if (target.size != "DEFAULT" && target.size == size) {
-      temp++;
-    }
-    rank = temp;
+    rank = temp / keywords.length;
     return rank;
   }
 
