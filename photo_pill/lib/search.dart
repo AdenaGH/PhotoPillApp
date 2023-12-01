@@ -25,7 +25,7 @@ class ReferenceList {
         continue;
       }
       String id = item["rxcui"];
-      String name = idMap[id];
+      String name = idMap[id] ?? "";
       String color = "";
       String shape = "";
       String size = "";
@@ -51,6 +51,9 @@ class ReferenceList {
         continue;
       }
     }
+    //for (int i = 0; i < drugList.length; i++) {
+    //  print(drugList[i].info());
+    //}
     return drugList;
   }
 

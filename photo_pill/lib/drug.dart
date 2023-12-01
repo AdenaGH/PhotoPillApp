@@ -3,7 +3,8 @@ class Drug implements Comparable<Drug> {
   String name = "DEFAULT";
   String id = "DEFAULT";
   String color = "DEFAULT"; //{"propName":"COLORTEXT","propValue":"WHITE"}
-  String shape = "DEFAULT"; //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
+  String shape =
+      "DEFAULT"; //{"propName":"SHAPETEXT","propValue":"barrel shaped"}
   String size = "DEFAULT"; //{"propName":"SIZE","propValue":"11 mm"}
   double rank = -1;
   Set<String> keywords = {};
@@ -15,45 +16,48 @@ class Drug implements Comparable<Drug> {
     List<String> temp = [];
     if (name.isNotEmpty) {
       this.name = name.trim().toLowerCase();
+      temp = this.id.split(" ");
+      for (String word in temp) {
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'), ''));
+      }
     }
     if (id.isNotEmpty) {
       this.id = id.trim().toLowerCase();
       temp = this.id.split(" ");
       for (String word in temp) {
-        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'), ''));
       }
     }
     if (color.isNotEmpty) {
       this.color = color.trim().toLowerCase();
       temp = this.color.split(" ");
       for (String word in temp) {
-        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'), ''));
       }
     }
     if (shape.isNotEmpty) {
       this.shape = shape.trim().toLowerCase();
       temp = this.shape.split(" ");
       for (String word in temp) {
-        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'), ''));
       }
     }
     if (size.isNotEmpty) {
       this.size = size.trim().toLowerCase();
       temp = this.size.split(" ");
       for (String word in temp) {
-        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
+        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'), ''));
       }
     }
   }
-
-  
 
   //  get & set rank
   //  @target       target drug
   double getRank(Drug target) {
     int temp = 0;
     for (String word in target.keywords) {
-      if(keywords.contains(word)) {
+      if (keywords.any((element) => element.contains(word))) {
+        print("here " + word);
         temp++;
       }
     }

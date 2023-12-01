@@ -32,7 +32,6 @@ Future<List<Drug>> returnProperties(
         final XmlDocument xmlDoc = XmlDocument.parse(response.body);
         final rxNormIdElements = xmlDoc.findAllElements('rxnormId');
         String rxcui = rxNormIdElements.single.innerText;
-        //print("RXCUI: $rxcui");
         const String baseUrl2 =
             'https://rxnav.nlm.nih.gov/REST/ndcproperties.json';
 
@@ -48,7 +47,6 @@ Future<List<Drug>> returnProperties(
           Map<String, dynamic> jsonMap = json.decode(response2.body);
           Map<String, String> idNameMap = {rxcui: drugNames[i]};
           Drug formattedDrug = ReferenceList.fetch(idNameMap, jsonMap)[0];
-          //print(formattedDrug);
           drugList.add(formattedDrug);
         } else {
           throw Exception(
@@ -62,7 +60,6 @@ Future<List<Drug>> returnProperties(
       print('Error for drug ${drugNames[i]}: $e');
     }
   }
-  print(descriptionDrug.info());
   ReferenceList.build(drugList,
       descriptionDrug); //NEED TO PASS descriptionDrug here as the second parameter
   List<Drug> rankedDrugsInfo = ReferenceList.export();
@@ -95,7 +92,6 @@ class _searchResults extends State<searchResults> {
         Provider.of<MedicationProvider>(context, listen: false);
     List<String> drugList = medicationProvider.drugList;
     properties = returnProperties(drugList, descriptionDrug);
-    print(properties);
     /*
     properties.then((propertyMap) {
       formattedProp = formattedProperties(Future.value(propertyMap));
@@ -113,11 +109,12 @@ class _searchResults extends State<searchResults> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Search Results'),
-          centerTitle: true, // Center-align the title
+          centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context); // Go back to the previous screen
+              ReferenceList.clean();
+              Navigator.pop(context);
             },
           ),
         ),
@@ -138,34 +135,43 @@ class _searchResults extends State<searchResults> {
               return ListView.builder(
                 itemCount: drugDataList.length,
                 itemBuilder: (context, index) {
-                  //Drug drugData = drugDataList[index];
-                  List<Drug> drugs = drugDataList;
+                  Drug drug = drugDataList[index];
 
                   return Column(
                     children: [
                       ListTile(
-                        title: Text(
-                          'Original Name: ${drugs[index].name}',
-                          // Add other information related to the original drug name
+                        title: RichText(
+                          text: TextSpan(
+                            style: DefaultTextStyle.of(context).style,
+                            children: [
+                              TextSpan(
+                                text: 'Name: ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                  text: '${drug.name}',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
                       ),
-                      // Now iterate over the drugs
-                      ...drugs.map((drug) => Column(
-                            children: [
-                              ListTile(
-                                title: Text('ID: ${drug.id}'),
-                              ),
-                              ListTile(
-                                title: Text('Color: ${drug.color}'),
-                              ),
-                              ListTile(
-                                title: Text('Shape: ${drug.shape}'),
-                              ),
-                              ListTile(
-                                title: Text('Size: ${drug.size}'),
-                              ),
-                            ],
-                          )),
+                      ListTile(
+                        title: Text('ID: ${drug.id}'),
+                      ),
+                      ListTile(
+                        title: Text('Color: ${drug.color}'),
+                      ),
+                      ListTile(
+                        title: Text('Shape: ${drug.shape}'),
+                      ),
+                      ListTile(
+                        title: Text('Size: ${drug.size}'),
+                      ),
+                      Divider(
+                          color: Colors.deepPurple,
+                          thickness: 1.5,
+                          height: 10.0), // Add a divider to separate sections
                     ],
                   );
                 },

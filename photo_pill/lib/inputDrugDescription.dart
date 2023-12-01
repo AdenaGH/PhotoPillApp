@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
 import "drug.dart";
+import 'package:photo_pill/searchResults.dart';
 
 class InputDrugDescription extends StatefulWidget {
   const InputDrugDescription({Key? key}) : super(key: key);
@@ -112,15 +113,16 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                   );
 
                   // Your existing navigation code
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => searchResults(descriptionDrug: descriptionDrug),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          searchResults(descriptionDrug: descriptionDrug),
+                    ),
+                  );
 
                   // Clear all data after using it
-                  clearAllData();
+                  //clearAllData();
                 }
               },
               child: const Text(
