@@ -38,7 +38,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
 
-    // Clear the drug list when loading
+    // Clear the drug list when loading - this is the update we made 
     medicationProvider.clearMedicines();
 
     // Add the loaded drugs to the provider
