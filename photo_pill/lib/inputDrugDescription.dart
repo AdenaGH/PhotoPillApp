@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:photo_pill/searchResults.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
-import 'drug.dart';
+import "drug.dart";
 
 class InputDrugDescription extends StatefulWidget {
   const InputDrugDescription({Key? key}) : super(key: key);
@@ -22,6 +21,14 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
   TextEditingController shapeController = TextEditingController();
   TextEditingController sizeController = TextEditingController();
 
+  void clearAllData() {
+    nameController.clear();
+    idController.clear();
+    colorController.clear();
+    shapeController.clear();
+    sizeController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +37,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
         title: const Text('Drug Description'),
       ),
       body: SizedBox(
-        height: MediaQuery.of(context).size.height *
-            0.95, // Set height to 75% of the screen width
+        height: MediaQuery.of(context).size.height * 0.95,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -58,13 +64,16 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
             TextField(
               controller: shapeController,
               decoration: InputDecoration(
-                  labelText: "Shape",
-                  hintText: "round, ellipitical, oval, etc"),
+                labelText: "Shape",
+                hintText: "round, ellipitical, oval, etc",
+              ),
             ),
             TextField(
               controller: sizeController,
               decoration: InputDecoration(
-                  labelText: "Size", hintText: "in mm, Ex: 10 mm, 20 mm, etc"),
+                labelText: "Size",
+                hintText: "in mm, Ex: 10 mm, 20 mm, etc",
+              ),
             ),
             ElevatedButton(
               onPressed: () {
@@ -72,7 +81,6 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                     Provider.of<MedicationProvider>(context, listen: false);
                 List<String> drugList = medicationProvider.drugList;
                 if (drugList.isEmpty) {
-                  // Show an alert dialog
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -83,7 +91,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                         actions: <Widget>[
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop(); // Close the dialog
+                              Navigator.of(context).pop();
                             },
                             child: Text('OK'),
                           ),
@@ -92,20 +100,27 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                     },
                   );
                 } else {
+                  // Drug descriptionDrug = Drug(...);
+                  // You need to create a Drug instance using the entered data
+                  // This is just a placeholder; replace it with your actual logic
                   Drug descriptionDrug = Drug(
-                      nameController.text,
-                      idController.text,
-                      colorController.text,
-                      shapeController.text,
-                      sizeController
-                          .text); //Drug that we build given our descriptions
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          searchResults(descriptionDrug: descriptionDrug),
-                    ),
+                    nameController.text,
+                    idController.text,
+                    colorController.text,
+                    shapeController.text,
+                    sizeController.text,
                   );
+
+                  // Your existing navigation code
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => searchResults(descriptionDrug: descriptionDrug),
+                  //   ),
+                  // );
+
+                  // Clear all data after using it
+                  clearAllData();
                 }
               },
               child: const Text(

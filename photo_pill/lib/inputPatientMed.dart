@@ -13,6 +13,11 @@ class InputPatientMed extends StatefulWidget {
 
 class _InputPatientMedState extends State<InputPatientMed> {
   final TextEditingController _newDrugNameController = TextEditingController();
+  
+  void clearAllData() {
+  final medicationProvider = Provider.of<MedicationProvider>(context, listen: false);
+  medicationProvider.clearAllData();
+}
 
   @override
   void initState() {
