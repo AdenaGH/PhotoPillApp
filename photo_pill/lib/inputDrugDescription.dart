@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_pill/searchResults.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
+import 'drug.dart';
 
 class InputDrugDescription extends StatefulWidget {
   const InputDrugDescription({Key? key}) : super(key: key);
@@ -14,7 +15,12 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
   bool isCheckedMg = false;
   bool isCheckedMl = false;
   bool isVisible = true;
-  List<String> drugDescriptions = []; // List to store drug names
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController idController = TextEditingController();
+  TextEditingController colorController = TextEditingController();
+  TextEditingController shapeController = TextEditingController();
+  TextEditingController sizeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,79 +35,37 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            const TextField(
+            TextField(
+              controller: nameController,
               decoration: InputDecoration(
                 labelText: "Name",
                 hintText: "Enter drug name or initial characters",
               ),
             ),
-            // want to add checkbox here for mg or ml
-            // need to find a way to concorprate dosage into Drug field
-            /*
-            const TextField(
+            TextField(
+              controller: idController,
               decoration: InputDecoration(
-                labelText: "Dosage",
-                hintText: "Enter dosage amount",
+                labelText: "Id",
+                hintText: "first digit(s) of rxcui id you remember",
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: CheckboxListTile(
-                    title: const Text("mg"),
-                    value: isCheckedMg,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isCheckedMg = value!;
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                ),
-                Expanded(
-                  child: CheckboxListTile(
-                    title: const Text("ml"),
-                    value: isCheckedMl,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isCheckedMl = value!;
-                      });
-                    },
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                )
-              ],
-            ),
-            */
-            const TextField(
-              // currently open ended, could make this drop down in the future
-              decoration: InputDecoration(
-                labelText: "Dosage Form",
-                hintText:
-                    "Ex: Tablet(Tab), Capsule(Cap), Powder, Oral, Injection, etc",
-              ),
-            ),
-            const TextField(
+            TextField(
+              controller: colorController,
               decoration: InputDecoration(
                 labelText: "Color",
               ),
             ),
-            const TextField(
+            TextField(
+              controller: shapeController,
               decoration: InputDecoration(
-                labelText: "Shape",
-              ),
+                  labelText: "Shape",
+                  hintText: "round, ellipitical, oval, etc"),
             ),
-            const TextField(
+            TextField(
+              controller: sizeController,
               decoration: InputDecoration(
-                labelText: "Size",
-              ),
+                  labelText: "Size", hintText: "in mm, Ex: 10 mm, 20 mm, etc"),
             ),
-            /*
-            const TextField(
-              decoration: InputDecoration(
-                labelText: "Purpose",
-              ),
-            ),*/
             ElevatedButton(
               onPressed: () {
                 final medicationProvider =
@@ -128,11 +92,19 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                     },
                   );
                 } else {
+                  Drug descriptionDrug = Drug(
+                      nameController.text,
+                      idController.text,
+                      colorController.text,
+                      shapeController.text,
+                      sizeController
+                          .text); //Drug that we build given our descriptions
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) {
-                      return const searchResults();
-                    }),
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          searchResults(descriptionDrug: descriptionDrug),
+                    ),
                   );
                 }
               },
