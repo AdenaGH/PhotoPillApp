@@ -8,7 +8,7 @@ class ReferenceList {
   //  fetch drug list
   //  @aipMap Map constructed by api requests
   //  @return a list of drug object
-  static List<Drug> fetch(Map<String> idMap, Map apiMap) {
+  static List<Drug> fetch(Map<String, String> idMap, Map apiMap) {
     var drugs;
     Set checked = {};
     try {
@@ -25,7 +25,7 @@ class ReferenceList {
         continue;
       }
       String id = item["rxcui"];
-      String name = idMap[id].toLowerCase();
+      String name = idMap[id];
       String color = "";
       String shape = "";
       String size = "";
@@ -65,7 +65,7 @@ class ReferenceList {
       }
       list.add(drug);
     }
-    list.sort((a,b) => b.compareTo(a));
+    list.sort((a, b) => b.compareTo(a));
     return list;
   }
 

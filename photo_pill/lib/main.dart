@@ -4,15 +4,26 @@ import 'package:photo_pill/inputPatientMed.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
 import 'myHomePage.dart'; // Assuming this is your home page
+import 'package:shared_preferences/shared_preferences.dart';
+void main() async {
+  // Ensure WidgetsBinding is initialized before calling SharedPreferences
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
+  // Load drugs from SharedPreferences and clear the list
+  final prefs = await SharedPreferences.getInstance();
+  final drugList = prefs.getStringList('drugList') ?? [];
+  prefs.remove('drugList'); // Remove the drug list from SharedPreferences
+
+  final medicationProvider = MedicationProvider(drugList);
+
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => MedicationProvider([]),
+    ChangeNotifierProvider.value(
+      value: medicationProvider,
       child: const MyApp(),
     ),
   );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

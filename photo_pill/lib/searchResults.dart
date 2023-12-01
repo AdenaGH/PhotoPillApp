@@ -46,7 +46,8 @@ Future<List<Drug>> returnProperties(
         final http.Response response2 = await http.get(uri2);
         if (response2.statusCode == 200) {
           Map<String, dynamic> jsonMap = json.decode(response2.body);
-          Drug formattedDrug = ReferenceList.fetch(drugNames[i], jsonMap)[0];
+          Map<String, String> idNameMap = {rxcui: drugNames[i]};
+          Drug formattedDrug = ReferenceList.fetch(idNameMap, jsonMap)[0];
           //print(formattedDrug);
           drugList.add(formattedDrug);
         } else {
