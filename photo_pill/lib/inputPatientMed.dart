@@ -29,8 +29,12 @@ class _InputPatientMedState extends State<InputPatientMed> {
   Future<void> _loadDrugList() async {
     final prefs = await SharedPreferences.getInstance();
     final drugList = prefs.getStringList('drugList') ?? [];
-    final medicationProvider =
-        Provider.of<MedicationProvider>(context, listen: false);
+    final medicationProvider = Provider.of<MedicationProvider>(context, listen: false);
+
+    // Clear the drug list when loading
+    medicationProvider.clearMedicines();
+
+    // Add the loaded drugs to the provider
     medicationProvider.setDrugList(drugList);
   }
 
