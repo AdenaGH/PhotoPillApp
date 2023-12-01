@@ -22,6 +22,8 @@ class MedicationProvider with ChangeNotifier {
     _drugList.clear();
     notifyListeners();
   }
+  
+  //newly added function called ClearAllData to implemet clear data button in the homepage
   void clearAllData() {
     _drugList.clear();
     _saveDrugList([]);

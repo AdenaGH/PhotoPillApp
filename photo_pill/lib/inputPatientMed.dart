@@ -14,6 +14,8 @@ class InputPatientMed extends StatefulWidget {
 class _InputPatientMedState extends State<InputPatientMed> {
   final TextEditingController _newDrugNameController = TextEditingController();
   bool isVisible = true;
+  
+  //newly added function called ClearAllData to implemet clear data button in the homepage
   void clearAllData() {
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
