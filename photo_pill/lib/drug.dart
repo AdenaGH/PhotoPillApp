@@ -8,7 +8,7 @@ class Drug implements Comparable<Drug> {
   String size = "DEFAULT"; //{"propName":"SIZE","propValue":"11 mm"}
   double rank = -1;
   Set<String> keywords = {};
-
+  String nameStartKeyword = "";
   //  constructor
   Drug.empty();
   //  pass in "" if empty input
@@ -16,10 +16,7 @@ class Drug implements Comparable<Drug> {
     List<String> temp = [];
     if (name.isNotEmpty) {
       this.name = name.trim().toLowerCase();
-      temp = this.id.split(" ");
-      for (String word in temp) {
-        keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'), ''));
-      }
+      nameStartKeyword = this.name;
     }
     if (id.isNotEmpty) {
       this.id = id.trim().toLowerCase();
@@ -55,6 +52,10 @@ class Drug implements Comparable<Drug> {
   //  @target       target drug
   double getRank(Drug target) {
     int temp = 0;
+    if (nameStartKeyword.startsWith(target.nameStartKeyword) &&
+        target.nameStartKeyword != "") {
+      temp++;
+    }
     for (String word in target.keywords) {
       if (keywords.any((element) => element.contains(word))) {
         temp++;
