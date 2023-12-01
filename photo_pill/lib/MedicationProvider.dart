@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class MedicationProvider with ChangeNotifier {
   List<String> _drugList = [];
 
@@ -21,6 +21,15 @@ class MedicationProvider with ChangeNotifier {
   void clearMedicines() {
     _drugList.clear();
     notifyListeners();
+  }
+  void clearAllData() {
+    _drugList.clear();
+    _saveDrugList([]);
+    notifyListeners();
+  }
+  Future<void> _saveDrugList(List<String> drugList) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('drugList', drugList);
   }
 
   // Set the drug list (useful when loading from shared preferences)
