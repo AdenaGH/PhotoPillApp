@@ -37,6 +37,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
             ),
             // want to add checkbox here for mg or ml
             // need to find a way to concorprate dosage into Drug field
+            /*
             const TextField(
               decoration: InputDecoration(
                 labelText: "Dosage",
@@ -71,11 +72,13 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                 )
               ],
             ),
+            */
             const TextField(
               // currently open ended, could make this drop down in the future
               decoration: InputDecoration(
                 labelText: "Dosage Form",
-                hintText: "Ex: Tablet, Capsule, Powder, Oral, Injection, etc",
+                hintText:
+                    "Ex: Tablet(Tab), Capsule(Cap), Powder, Oral, Injection, etc",
               ),
             ),
             const TextField(
@@ -85,9 +88,20 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
             ),
             const TextField(
               decoration: InputDecoration(
-                labelText: "Purpose",
+                labelText: "Shape",
               ),
             ),
+            const TextField(
+              decoration: InputDecoration(
+                labelText: "Size",
+              ),
+            ),
+            /*
+            const TextField(
+              decoration: InputDecoration(
+                labelText: "Purpose",
+              ),
+            ),*/
             ElevatedButton(
               onPressed: () {
                 final medicationProvider =
