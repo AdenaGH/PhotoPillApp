@@ -14,31 +14,31 @@ class Drug implements Comparable<Drug> {
   Drug(String name, String id, String color, String shape, String size) {
     List<String> temp = [];
     if (name.isNotEmpty) {
-      this.name = name.trim().toUpperCase();
+      this.name = name.trim().toLowerCase();
     }
     if (id.isNotEmpty) {
-      this.id = id.trim().toUpperCase();
+      this.id = id.trim().toLowerCase();
       temp = this.id.split(" ");
       for (String word in temp) {
         keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
       }
     }
     if (color.isNotEmpty) {
-      this.color = color.trim().toUpperCase();
+      this.color = color.trim().toLowerCase();
       temp = this.color.split(" ");
       for (String word in temp) {
         keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
       }
     }
     if (shape.isNotEmpty) {
-      this.shape = shape.trim().toUpperCase();
+      this.shape = shape.trim().toLowerCase();
       temp = this.shape.split(" ");
       for (String word in temp) {
         keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));
       }
     }
     if (size.isNotEmpty) {
-      this.size = size.trim().toUpperCase();
+      this.size = size.trim().toLowerCase();
       temp = this.size.split(" ");
       for (String word in temp) {
         keywords.add(word.trim().replaceAll(new RegExp(r'[^\w\s]+'),''));

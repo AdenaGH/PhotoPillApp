@@ -25,7 +25,7 @@ class ReferenceList {
         continue;
       }
       String id = item["rxcui"];
-      String name = idMap[id];
+      String name = idMap[id].toLowerCase();
       String color = "";
       String shape = "";
       String size = "";
