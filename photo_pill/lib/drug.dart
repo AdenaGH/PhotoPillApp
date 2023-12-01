@@ -57,7 +57,6 @@ class Drug implements Comparable<Drug> {
     int temp = 0;
     for (String word in target.keywords) {
       if (keywords.any((element) => element.contains(word))) {
-        print("here " + word);
         temp++;
       }
     }

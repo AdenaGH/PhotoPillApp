@@ -12,12 +12,14 @@ import 'drug.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
 
-//this method retrieves the rxcui string given the list of patient meds
-// WE NEED TO REPLACE THIS API CALL WITH getApproximateMatch, it returns a ranked ordering of rxcui, we can potentially call each one and see which one returns
+/**
+ * @param drugNames: the list of patient medications that we pass in to look up properties
+ * @param descriptionDrug: the patient descriptions that we convert to a drug, primary means of comparison
+ * @returns a list of drugs, ranked in order given the cross-referencing
+ */
 Future<List<Drug>> returnProperties(
     List<String> drugNames, Drug descriptionDrug) async {
   const String baseUrl = 'https://rxnav.nlm.nih.gov/REST/rxcui.xml';
-  List<Map<String, dynamic>> apiRespFinalPrint = [];
   List<Drug> drugList = [];
   for (int i = 0; i < drugNames.length; i++) {
     try {
@@ -60,10 +62,8 @@ Future<List<Drug>> returnProperties(
       print('Error for drug ${drugNames[i]}: $e');
     }
   }
-  ReferenceList.build(drugList,
-      descriptionDrug); //NEED TO PASS descriptionDrug here as the second parameter
+  ReferenceList.build(drugList, descriptionDrug);
   List<Drug> rankedDrugsInfo = ReferenceList.export();
-  //return rankedDrugsInfo;
   return rankedDrugsInfo;
 }
 
@@ -86,17 +86,10 @@ class _searchResults extends State<searchResults> {
   void initState() {
     super.initState();
     Drug descriptionDrug = widget.descriptionDrug;
-    //properties = returnProperties(
-    //"Lipitor + 10 + mg + Tab"); //hardedcoded for now, need to pass in list of drugs and modify other function as a for loop
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
     List<String> drugList = medicationProvider.drugList;
     properties = returnProperties(drugList, descriptionDrug);
-    /*
-    properties.then((propertyMap) {
-      formattedProp = formattedProperties(Future.value(propertyMap));
-      setState(() {});
-    });*/
   }
 
   @override
@@ -171,7 +164,7 @@ class _searchResults extends State<searchResults> {
                       Divider(
                           color: Colors.deepPurple,
                           thickness: 1.5,
-                          height: 10.0), // Add a divider to separate sections
+                          height: 10.0), // A divider to separate sections
                     ],
                   );
                 },
