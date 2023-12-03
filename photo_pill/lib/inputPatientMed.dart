@@ -194,7 +194,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
                             );
 
                             setState(() {
-                              isVisible = false;
+                              //isVisible = false;
                             });
 
                             Navigator.of(context)
