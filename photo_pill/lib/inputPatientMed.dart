@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:photo_pill/takePicture.dart';
+import 'package:camera/camera.dart';
 
 class InputPatientMed extends StatefulWidget {
   const InputPatientMed({Key? key}) : super(key: key);
@@ -137,6 +139,30 @@ class _InputPatientMedState extends State<InputPatientMed> {
     _saveDrugList([]);
   }
 
+  void navigateToTakePictureScreen() async {
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+
+    final extractedText = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return TakePictureScreen(camera: firstCamera);
+      }),
+    );
+    if (extractedText != null && extractedText.trim().isNotEmpty) {
+      final medicationProvider =
+          Provider.of<MedicationProvider>(context, listen: false);
+      medicationProvider.addDrugName(extractedText);
+      final updatedDrugList = [...medicationProvider.drugList];
+      _saveDrugList(updatedDrugList);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('$extractedText added to drug list'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,6 +183,12 @@ class _InputPatientMedState extends State<InputPatientMed> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          FloatingActionButton(
+            onPressed: navigateToTakePictureScreen,
+            tooltip: 'Scan Text',
+            child: const Icon(Icons.camera_alt),
+          ),
+          SizedBox(height: 10),
           FloatingActionButton(
             backgroundColor: Colors.lightBlue,
             splashColor: Colors.lightBlueAccent,
