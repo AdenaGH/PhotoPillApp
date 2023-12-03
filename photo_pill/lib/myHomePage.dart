@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:photo_pill/inputDrugDescription.dart';
-import 'package:photo_pill/inputPatientMed.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
+import 'inputPatientMed.dart';
+import 'inputDrugDescription.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -17,6 +17,34 @@ class _MyHomePageState extends State<MyHomePage> {
   void clearAllData(BuildContext context) {
     final medicationProvider = Provider.of<MedicationProvider>(context, listen: false);
     medicationProvider.clearAllData();
+  }
+
+  Future<void> _showClearDataConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Clear Data Confirmation'),
+          content: const Text('Are you sure you want to clear all data? This action cannot be undone.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                clearAllData(context); // Call the function to clear data
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('OK, Clear Data'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -76,8 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 75,
               child: ElevatedButton(
                 onPressed: () {
-                  clearAllData(context); // Call the function to clear data
-                  print('Clear button pressed');
+                  _showClearDataConfirmationDialog(); // Show the confirmation dialog
                 },
                 child: const Text(
                   'Clear Data',
