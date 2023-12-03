@@ -14,12 +14,41 @@ class InputPatientMed extends StatefulWidget {
 class _InputPatientMedState extends State<InputPatientMed> {
   final TextEditingController _newDrugNameController = TextEditingController();
   bool isVisible = true;
-  
+
   //newly added function called ClearAllData to implemet clear data button in the homepage
   void clearAllData() {
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
     medicationProvider.clearAllData();
+  }
+
+  Future<void> _showClearDataConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Clear Data Confirmation'),
+          content: const Text(
+              'Are you sure you want to clear all data? This action cannot be undone.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                clearAllData(); // Call the function to clear data
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('OK, Clear Data'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -40,7 +69,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
 
-    // Clear the drug list when loading - this is the update we made 
+    // Clear the drug list when loading - this is the update we made
     medicationProvider.clearMedicines();
 
     // Add the loaded drugs to the provider
@@ -213,7 +242,9 @@ class _InputPatientMedState extends State<InputPatientMed> {
           ),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: clearMedicines,
+            onPressed: () {
+              _showClearDataConfirmationDialog(); // Show the confirmation dialog
+            },
             child: const Text('Clear Medicines'),
           ),
         ],
