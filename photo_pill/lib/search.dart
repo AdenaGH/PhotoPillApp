@@ -51,9 +51,6 @@ class ReferenceList {
         continue;
       }
     }
-    //for (int i = 0; i < drugList.length; i++) {
-    //  print(drugList[i].info());
-    //}
     return drugList;
   }
 
