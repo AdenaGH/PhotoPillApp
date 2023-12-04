@@ -15,7 +15,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
   final TextEditingController _newDrugNameController = TextEditingController();
   bool isVisible = true;
 
-  // newly added function called ClearAllData to implement clear data button on the homepage
+  //newly added function called ClearAllData to implemet clear data button in the homepage
   void clearAllData() {
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
@@ -81,56 +81,52 @@ class _InputPatientMedState extends State<InputPatientMed> {
     await prefs.setStringList('drugList', drugList);
   }
 
-Widget buildMedicineList() {
-  final medicationProvider = Provider.of<MedicationProvider>(context);
-  final drugList = medicationProvider.drugList;
+  Widget buildMedicineList() {
+    final medicationProvider = Provider.of<MedicationProvider>(context);
+    final drugList = medicationProvider.drugList;
 
-  return drugList.isEmpty
-      ? Center(
-          child: const Text('No medications added.'),
-        )
-      : ListView(
-          shrinkWrap: true,
-          physics: AlwaysScrollableScrollPhysics(),
-          children: drugList.asMap().entries.map((entry) {
-            final int index = entry.key;
-            final String drugName = entry.value;
+    return drugList.isEmpty
+        ? const Text('No medications added.')
+        : Column(
+            children: drugList.asMap().entries.map((entry) {
+              final int index = entry.key;
+              final String drugName = entry.value;
 
-            return ListTile(
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              tileColor: Colors.green,
-              title: Text(
-                drugName,
-                style: const TextStyle(color: Colors.white),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    color: Colors.white,
-                    onPressed: () {
-                      _editDrugName(index);
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    color: Colors.white,
-                    onPressed: () {
-                      medicationProvider.removeDrugName(drugName);
-                      final updatedDrugList = [
-                        ...medicationProvider.drugList
-                      ];
-                      _saveDrugList(updatedDrugList);
-                    },
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-        );
-}
+              return ListTile(
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                tileColor: Colors.green,
+                title: Text(
+                  drugName,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      color: Colors.white,
+                      onPressed: () {
+                        _editDrugName(index);
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      color: Colors.white,
+                      onPressed: () {
+                        medicationProvider.removeDrugName(drugName);
+                        final updatedDrugList = [
+                          ...medicationProvider.drugList
+                        ];
+                        _saveDrugList(updatedDrugList);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          );
+  }
 
   void _editDrugName(int index) {
     showDialog(
@@ -223,9 +219,9 @@ Widget buildMedicineList() {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('$newDrugName added'),
-                                duration: Duration(seconds: 1),
                               ),
                             );
+
                             setState(() {
                               //isVisible = false;
                             });
