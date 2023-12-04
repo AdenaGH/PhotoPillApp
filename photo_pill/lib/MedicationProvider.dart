@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 class MedicationProvider with ChangeNotifier {
   List<String> _drugList = [];
 
   // initialize with a list of drugs
+
   MedicationProvider(List<String> initialDrugs) {
     _drugList = initialDrugs;
   }
@@ -22,7 +24,7 @@ class MedicationProvider with ChangeNotifier {
     _drugList.clear();
     notifyListeners();
   }
-  
+
   //newly added function called ClearAllData to implemet clear data button in the homepage
   void clearAllData() {
     _drugList.clear();
@@ -40,6 +42,7 @@ class MedicationProvider with ChangeNotifier {
     notifyListeners();
   }
 
+
   // Remove a drug from the list
   void removeDrugName(String drugName) {
     _drugList.remove(drugName);
@@ -54,4 +57,5 @@ class MedicationProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
 }

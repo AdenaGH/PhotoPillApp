@@ -56,6 +56,34 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                 hintText: "first digit(s) of rxcui id you remember",
               ),
             ),
+            Row(
+              children: [
+                Expanded(
+                  child: CheckboxListTile(
+                    title: Text("mg"),
+                    value: isCheckedMg,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isCheckedMg = value!;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                ),
+                Expanded(
+                  child: CheckboxListTile(
+                    title: Text("ml"),
+                    value: isCheckedMl,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isCheckedMl = value!;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                  ),
+                )
+              ],
+            ),
             TextField(
               controller: colorController,
               decoration: InputDecoration(
@@ -77,6 +105,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
               ),
             ),
             ElevatedButton(
+
               onPressed: () {
                 final medicationProvider =
                     Provider.of<MedicationProvider>(context, listen: false);
@@ -131,6 +160,7 @@ class _InputDrugDescriptionState extends State<InputDrugDescription> {
                 textAlign: TextAlign.center,
               ),
             )
+
           ],
         ),
       ),

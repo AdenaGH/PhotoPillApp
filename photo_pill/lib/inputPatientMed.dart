@@ -14,7 +14,6 @@ class InputPatientMed extends StatefulWidget {
 class _InputPatientMedState extends State<InputPatientMed> {
   final TextEditingController _newDrugNameController = TextEditingController();
   bool isVisible = true;
-
   // newly added function called ClearAllData to implement clear data button on the homepage
   void clearAllData() {
     final medicationProvider =
@@ -169,11 +168,14 @@ Widget buildMedicineList() {
     final medicationProvider =
         Provider.of<MedicationProvider>(context, listen: false);
     medicationProvider.clearMedicines();
+
     _saveDrugList([]);
   }
 
   @override
   Widget build(BuildContext context) {
+    final medicationProvider = Provider.of<MedicationProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
@@ -201,6 +203,7 @@ Widget buildMedicineList() {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: const Text('Add Drug Name'),
+
                     content: TextField(
                       controller: _newDrugNameController,
                     ),
@@ -250,6 +253,7 @@ Widget buildMedicineList() {
               _showClearDataConfirmationDialog(); // Show the confirmation dialog
             },
             child: const Text('Clear Medicines'),
+
           ),
         ],
       ),
