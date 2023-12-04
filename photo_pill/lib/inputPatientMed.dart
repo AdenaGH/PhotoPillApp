@@ -1,3 +1,4 @@
+// inputPatientMed.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'MedicationProvider.dart';
@@ -13,6 +14,41 @@ class InputPatientMed extends StatefulWidget {
 class _InputPatientMedState extends State<InputPatientMed> {
   final TextEditingController _newDrugNameController = TextEditingController();
   bool isVisible = true;
+  // newly added function called ClearAllData to implement clear data button on the homepage
+  void clearAllData() {
+    final medicationProvider =
+        Provider.of<MedicationProvider>(context, listen: false);
+    medicationProvider.clearAllData();
+  }
+
+  Future<void> _showClearDataConfirmationDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Clear Data Confirmation'),
+          content: const Text(
+              'Are you sure you want to clear all data? This action cannot be undone.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                clearAllData(); // Call the function to clear data
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('OK, Clear Data'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -29,7 +65,13 @@ class _InputPatientMedState extends State<InputPatientMed> {
   Future<void> _loadDrugList() async {
     final prefs = await SharedPreferences.getInstance();
     final drugList = prefs.getStringList('drugList') ?? [];
-    final medicationProvider = Provider.of<MedicationProvider>(context, listen: false);
+    final medicationProvider =
+        Provider.of<MedicationProvider>(context, listen: false);
+
+    // Clear the drug list when loading - this is the update we made
+    medicationProvider.clearMedicines();
+
+    // Add the loaded drugs to the provider
     medicationProvider.setDrugList(drugList);
   }
 
@@ -38,34 +80,95 @@ class _InputPatientMedState extends State<InputPatientMed> {
     await prefs.setStringList('drugList', drugList);
   }
 
-  Widget buildMedicineList() {
-    final medicationProvider = Provider.of<MedicationProvider>(context);
-    final drugList = medicationProvider.drugList;
+Widget buildMedicineList() {
+  final medicationProvider = Provider.of<MedicationProvider>(context);
+  final drugList = medicationProvider.drugList;
 
-    return drugList.isEmpty
-        ? Text('No medications added.')
-        : Column(
-            children: drugList.map((drugName) {
-              return Container(
-                margin: EdgeInsets.symmetric(vertical: 8),
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  drugName,
-                  style: TextStyle(color: Colors.white),
-                ),
-              );
-            }).toList(),
-          );
+  return drugList.isEmpty
+      ? Center(
+          child: const Text('No medications added.'),
+        )
+      : ListView(
+          shrinkWrap: true,
+          physics: AlwaysScrollableScrollPhysics(),
+          children: drugList.asMap().entries.map((entry) {
+            final int index = entry.key;
+            final String drugName = entry.value;
+
+            return ListTile(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              tileColor: Colors.green,
+              title: Text(
+                drugName,
+                style: const TextStyle(color: Colors.white),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    color: Colors.white,
+                    onPressed: () {
+                      _editDrugName(index);
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    color: Colors.white,
+                    onPressed: () {
+                      medicationProvider.removeDrugName(drugName);
+                      final updatedDrugList = [
+                        ...medicationProvider.drugList
+                      ];
+                      _saveDrugList(updatedDrugList);
+                    },
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        );
+}
+
+  void _editDrugName(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        final medicationProvider =
+            Provider.of<MedicationProvider>(context, listen: false);
+        String editedDrugName = medicationProvider.drugList[index];
+        return AlertDialog(
+          title: const Text('Edit Drug Name'),
+          content: TextField(
+            controller: TextEditingController(text: editedDrugName),
+            onChanged: (value) {
+              editedDrugName = value;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                if (editedDrugName.trim().isNotEmpty) {
+                  medicationProvider.editDrugName(index, editedDrugName);
+                  final updatedDrugList = [...medicationProvider.drugList];
+                  _saveDrugList(updatedDrugList);
+                  Navigator.of(context).pop(); // Close the dialog
+                }
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void clearMedicines() {
-    final medicationProvider = Provider.of<MedicationProvider>(context, listen: false);
+    final medicationProvider =
+        Provider.of<MedicationProvider>(context, listen: false);
     medicationProvider.clearMedicines();
-    isVisible = true;
+
     _saveDrugList([]);
   }
 
@@ -83,7 +186,7 @@ class _InputPatientMedState extends State<InputPatientMed> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             buildMedicineList(),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -99,7 +202,8 @@ class _InputPatientMedState extends State<InputPatientMed> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Add Drug Name'),
+                    title: const Text('Add Drug Name'),
+
                     content: TextField(
                       controller: _newDrugNameController,
                     ),
@@ -109,25 +213,31 @@ class _InputPatientMedState extends State<InputPatientMed> {
                           final newDrugName = _newDrugNameController.text;
                           if (newDrugName.trim().isNotEmpty) {
                             _newDrugNameController.clear();
+                            final medicationProvider =
+                                Provider.of<MedicationProvider>(context,
+                                    listen: false);
                             medicationProvider.addDrugName(newDrugName);
 
-                            final updatedDrugList = [...medicationProvider.drugList];
+                            final updatedDrugList = [
+                              ...medicationProvider.drugList
+                            ];
                             _saveDrugList(updatedDrugList);
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('$newDrugName added'),
+                                duration: Duration(seconds: 1),
                               ),
                             );
-
                             setState(() {
-                              isVisible = false;
+                              //isVisible = false;
                             });
 
-                            Navigator.of(context).pop(); // Close the dialog
+                            Navigator.of(context)
+                                .pop(); // Clear and Close the dialog
                           }
                         },
-                        child: Text('Add'),
+                        child: const Text('Add'),
                       ),
                     ],
                   );
@@ -137,10 +247,13 @@ class _InputPatientMedState extends State<InputPatientMed> {
             tooltip: 'Add Items',
             child: const Icon(Icons.add),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: clearMedicines,
-            child: Text('Clear Medicines'),
+            onPressed: () {
+              _showClearDataConfirmationDialog(); // Show the confirmation dialog
+            },
+            child: const Text('Clear Medicines'),
+
           ),
         ],
       ),

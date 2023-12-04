@@ -1,188 +1,86 @@
 import 'drug.dart';
 //export based on size requires dependency : "collection: ^1.14.13"
-import 'package:collection/collection.dart';
-/*
-class PriorityMap {
-    Map<String, List<Drug>> map = {
-        "noMatch" : List<Drug>.empty(),
-        "priority1" : List<Drug>.empty(),
-        "priority2" : List<Drug>.empty(),
-        "priority3" : List<Drug>.empty()
-    };
-    bool isEmpty = true;
 
-    //  constructor
-    //  run search by default
-    PriorityMap(List<Drug> drugList, Drug target) {
-        map = crossReference(drugList, target);
-        isEmpty = false;
+class ReferenceList {
+  //  static list
+  static List<Drug> list = [];
+
+  //  fetch drug list
+  //  @aipMap Map constructed by api requests
+  //  @return a list of drug object
+  static List<Drug> fetch(Map<String, String> idMap, Map apiMap) {
+    var drugs;
+    Set checked = {};
+    try {
+      drugs = apiMap["ndcPropertyList"]["ndcProperty"];
+    } catch (e) {
+      throw const FormatException('api data not formated correctly');
     }
-
-    //  update map with new input, start fresh
-    //  @drugList   a list of drugs to check, mush fetch drug object before hands
-    //  @target     user input, property of the drug that's been searched
-    void update(List<Drug> drugList, Drug target) {
-        map = crossReference(drugList, target);
-        isEmpty = false;
+    if (drugs.isEmpty) {
+      throw const FormatException('empty api data');
     }
-
-    //  append new input the the map
-    //  @drugList   a list of drugs to check, mush fetch drug object before hands
-    //  @target     user input, property of the drug that's been searched
-    void append(List<Drug> drugList, Drug target) {
-        if (isEmpty) {
-            update(drugList, target);
+    List<Drug> drugList = <Drug>[];
+    for (Map item in drugs) {
+      if (item.keys.isEmpty) {
+        continue;
+      }
+      String id = item["rxcui"];
+      String name = idMap[id] ?? "";
+      String color = "";
+      String shape = "";
+      String size = "";
+      try {
+        if (!checked.contains(id)) {
+          var propertyList = item["propertyConceptList"]["propertyConcept"];
+          for (var concept in propertyList) {
+            if (concept["propName"] == "COLORTEXT") {
+              color = concept["propValue"];
+            }
+            if (concept["propName"] == "SHAPETEXT") {
+              shape = concept["propValue"];
+            }
+            if (concept["propName"] == "SIZE") {
+              size = concept["propValue"];
+            }
+          }
+          drugList.add(Drug(name, id, color, shape, size));
+          checked.add(id);
         }
-        for (Drug drug in drugList) {
-            if (drug.priority < 0) {
-                drug.compare(target);
-            }
-            List<Drug> list;
-            switch (drug.priority) {
-                case 1:
-                    list = map["priority1"];
-                    break;
-                case 2:
-                    list = map["priority2"];
-                    break;
-                case 3:
-                    list = map["priority3"];
-                    break;
-                default:
-                    list = map["noMatch"];
-                    break;
-            }
-            bool flag = true;
-            for (Drug existed in list) {
-                if (existed.compare(drug) == 3) {
-                    flag = false;
-                }
-            }
-            if (flag) {
-                drug.compare(target);
-                list.add(drug);
-            }
-        }
+      } catch (e) {
+        print("drug omitted: $id");
+        continue;
+      }
     }
-    
-    //  clean map
-    void clean() {
-        map = {
-        "noMatch" : List<Drug>.empty(),
-        "priority1" : List<Drug>.empty(),
-        "priority2" : List<Drug>.empty(),
-        "priority3" : List<Drug>.empty()
-        };
-        isEmpty = true;
-    }
+    //for (int i = 0; i < drugList.length; i++) {
+    //  print(drugList[i].info());
+    //}
+    return drugList;
+  }
 
-    //  export the result in order
-    //  1st order: priority
-    //  2nd order: size "large" "small"
-    //  @sizeText   patient's input
-    //  @return a list of drug
-    List<Drug> export(String sizeText) {
-        if (sizeText == "small") {
-            return sortSmall();
-        } else if (sizeText == "large") {
-            return sortLarge();
-        } else {
-            return [];//"mid" in progress
-        }
-    }
-
-    //  export the result in min order
-    //  1st order: priority
-    //  2nd order: size "small"
-    //  @return a list of drug
-    List<Drug> sortSmall() {
-        List<Drug> list = List<Drug>.empty();
-        list.addAll(sortSmallHelper(map["priority3"]));
-        list.addAll(sortSmallHelper(map["priority2"]));
-        list.addAll(sortSmallHelper(map["priority1"]));
-        list.addAll(sortSmallHelper(map["noMatch"]));
-        return list;
-    }
-
-    //Helper
-    List<Drug> sortSmallHelper(List<Drug> priorityList) {
-        List<Drug> list = List<Drug>.empty();
-        PriorityQueue<Drug> minq = PriorityQueue<Drug>((a,b)=>a.compareTo(b));
-        if (priorityList.size != 0) {
-            for (Drug drug in priorityList) {
-                minq.add(drug);
-            }
-            list.add(minq.removeFirst());
-        }
-        return list;
-    }
-
-    //  export the result in min order
-    //  1st order: priority
-    //  2nd order: size "large"
-    //  @return a list of drug
-    List<Drug> sortLarge() {
-        List<Drug> list = List<Drug>.empty();
-        list.addAll(sortLargeHelper(map["priority3"]));
-        list.addAll(sortLargeHelper(map["priority2"]));
-        list.addAll(sortLargeHelper(map["priority1"]));
-        list.addAll(sortLargeHelper(map["noMatch"]));
-        return list;
-    }
-
-    //Helper
-    List<Drug> sortLargeHelper(List<Drug> priorityList) {
-        List<Drug> list = List<Drug>.empty();
-        PriorityQueue<Drug> minq = PriorityQueue<Drug>((a,b)=>b.compareTo(a));
-        if (priorityList.size != 0) {
-            for (Drug drug in priorityList) {
-                minq.add(drug);
-            }
-            list.add(minq.removeFirst());
-        }
-        return list;
-    }
-
-}
-
-
-//  cross-reference check to determain what's the most likely drug in the list
-//  @drugList   a list of drugs to check, mush fetch drug object before hands
-//  @target     user input, property of the drug that's been searched
-//  @return     a map of lists of drugs based on priority
-Map<String, List<Drug>> crossReference(List<Drug> drugList, Drug target) {
-    Map<String, List<Drug>> priorityMap = {
-    };
-    List<Drug> list1 = [];
-    List<Drug> list2 = [];
-    List<Drug> list3 = [];
-    List<Drug> list0 = [];
-    if (drugList.isEmpty) {
-      return priorityMap;
-    }
+  //  build rank map
+  //  @drugList           the referencing list
+  //  @target             target drug
+  //  @return             the sorted list
+  static List<Drug> build(List<Drug> drugList, Drug target) {
     for (Drug drug in drugList) {
-        if (drug.priority < 0) {
-            drug.compare(target);
-        }
-        switch (drug.priority) {
-            case 1:
-                list1.add(drug);
-                break;
-            case 2:
-                list2.add(drug);
-                break;
-            case 3:
-                list3.add(drug);
-                break;
-            default:
-                list0.add(drug);
-                break;
-        }
+      if (drug.rank == -1) {
+        drug.getRank(target);
+      }
+      list.add(drug);
     }
-    priorityMap["noMatch"] = list0;
-    priorityMap["priority1"] = list1;
-    priorityMap["priority2"] = list2;
-    priorityMap["priority3"] = list3;
-    return priorityMap;
+    list.sort((a, b) => b.compareTo(a));
+    return list;
+  }
+
+  // clean rank map
+  static void clean() {
+    list = [];
+  }
+
+  // export result
+  static List<Drug> export() {
+    return list;
+  }
 }
-*/
+
+
