@@ -10,15 +10,30 @@ PhotoPill is an app that will allow users to enter basic information about a pil
 
 ## Release Notes
 
+### Version 0.5.0:
+#### New Features
+* Implemented cross-referencing  to display ranked drug matches on search results screen.
+* Implemented error dialog for searching with empty patient medication list.
+* Finalized and implemented smooth navigation between pages.
+
+#### Bug Fixes
+* Clear button works and restarting the app also clears data.
+* Ability to edit and clear patient medications individually and as a group.
+
+#### Known Errors
+* N/A
+
+
+---
 ### Version 0.4.0:
 #### New Features
-* Implemented API call to find drug rxcui given a medication name
-* Implemented API calling to find drug properties utilizing the rxcui as a parameter 
+* Implemented API call to find drug rxcui given a medication name.
+* Implemented API calling to find drug properties utilizing the rxcui as a parameter.
 * Added functionality to format api response.
 
 #### Bug Fixes
-* State and data is saved across different states, even when navigating through the home page
-* Overflow on patient description page no longer occurs
+* State and data is saved across different states, even when navigating through the home page.
+* Overflow on patient description page no longer occurs.
 
 #### Known Errors
 * Search can happen even with an empty patient medication list
@@ -28,7 +43,7 @@ PhotoPill is an app that will allow users to enter basic information about a pil
 ### Version 0.3.0:
 #### New Features
 * Revitalized user interface to allow intuitive navigation between screens.
-* Added ability to manually enter patient descriptions
+* Added ability to manually enter patient descriptions.
 * Manually entered patient descriptions are stored locally.
 * Added ability to individually edit or delete medication list.
 
@@ -52,8 +67,8 @@ PhotoPill is an app that will allow users to enter basic information about a pil
 N/A
 
 #### Known Errors
-* List of medications will disappear once user switches screens
-* Empty text is allowed as valid input and will appear in lists
+* List of medications will disappear once user switches screens.
+* Empty text is allowed as valid input and will appear in lists.
 
 ---
 ### Version 0.1.0:
