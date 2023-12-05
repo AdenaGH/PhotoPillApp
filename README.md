@@ -1,6 +1,12 @@
 # PhotoPill
 PhotoPill is an app that will allow users to enter basic information about a pill (such as color, imprint, shape, size, etc.) to find the name of the pill. Data is pulled from the RxNorm API to find possible matches for inputted user data.
 
+## Installation instructions
+1. Navigate to the main page of this repository.
+2. Click on "Code", and download the ZIP.
+3. Open in IDE of your choice. We suggest VSCode.
+4. If using VSCode, choose a simulator from the bottom right and hit run in the tab menu.
+5. To install to an iOS device (MacOS required) , click on the "iOS" folder in VSCode, right click on the .workspace file to show in Finder, and double click the file to open in XCode. Connect your phone to your Mac device, then hit "run".
 
 ## Release Notes
 
