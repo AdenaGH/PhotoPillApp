@@ -3,7 +3,9 @@ PhotoPill is an app that will allow users to enter basic information about a pil
 
 ## Prerequisites
 IOS/Andriod device or an appropriate emulator 
+
 PC/Laptop 
+
 Any IDE that can open and run flutter files (VSCode recommended: https://code.visualstudio.com/download)
 
 ## Dependent Libraries
