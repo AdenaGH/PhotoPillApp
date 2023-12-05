@@ -1,12 +1,33 @@
 # PhotoPill
 PhotoPill is an app that will allow users to enter basic information about a pill (such as color, imprint, shape, size, etc.) to find the name of the pill. Data is pulled from the RxNorm API to find possible matches for inputted user data.
 
-## Installation instructions
+## Prerequisites
+IOS/Andriod device or an appropriate emulator 
+PC/Laptop 
+Any IDE that can open and run flutter files (VSCode recommended: https://code.visualstudio.com/download)
+
+## Dependent Libraries
+None
+
+## Download and Installation instructions
 1. Navigate to the main page of this repository.
 2. Click on "Code", and download the ZIP.
-3. Open in IDE of your choice. We suggest VSCode.
+3. Open in IDE of your choice. We suggest VSCode (see prerequisites for download instructions).
 4. If using VSCode, choose a simulator from the bottom right and hit run in the tab menu.
-5. To install to an iOS device (MacOS required) , click on the "iOS" folder in VSCode, right click on the .workspace file to show in Finder, and double click the file to open in XCode. Connect your phone to your Mac device, then hit "run".
+5. To install to an iOS device (MacOS required) , click on the "iOS" folder in VSCode, right click on the .workspace file to show in Finder, and double click the file to open in XCode. Connect your phone to your Mac device via a usb-c cable, then hit "run".
+
+### Download and Installation instructions
+Open the application on your mobile device
+
+## Troubleshooting
+**I can't seem to find my iPhone on my PC?**
+In order to download and install to your IPhone you must have a Mac device. This is an issue that has plagued our team and many other developers and there is no current workaround.
+
+**I don't have a cable, can I do it wirelessly?**
+Unfortunately Apple phones do not support unliscensed applications, so the only way to install it onto a mobile device currently is through your mac device and a cable. 
+
+**I am receiving errors when I try to run the application in VSCode**
+Make sure your VSCode is up to date
 
 ## Release Notes
 
