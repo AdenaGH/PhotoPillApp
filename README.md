@@ -1,6 +1,13 @@
 # PhotoPill
 PhotoPill is an app that will allow users to enter basic information about a pill (such as color, imprint, shape, size, etc.) to find the name of the pill. Data is pulled from the RxNorm API to find possible matches for inputted user data.
 
+**Demo**:
+
+
+https://github.com/user-attachments/assets/e40e606d-bba1-496a-b64c-e9f30582364b
+
+
+
 
 ## Release Notes
 
